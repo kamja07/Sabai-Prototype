@@ -1,0 +1,1926 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F0A1F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SABAI">
+<meta name="application-name" content="SABAI">
+<meta name="description" content="SABAI — 사주·점성술·바이오리듬 통합 운세·궁합 플랫폼">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMEYwQTFGIi8+PHRleHQgeD0iOTAiIHk9IjEwNSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iNDgiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNENEE0NDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGxldHRlci1zcGFjaW5nPSI0Ij5TQUJBSTwvdGV4dD48Y2lyY2xlIGN4PSIxNDAiIGN5PSI0NSIgcj0iNiIgZmlsbD0iI0Q0QTQ0NCIvPjxjaXJjbGUgY3g9IjE1NSIgY3k9IjU4IiByPSIzIiBmaWxsPSIjRThDMjZBIi8+PC9zdmc+">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMEYwQTFGIi8+PHRleHQgeD0iOTAiIHk9IjEwNSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iNDgiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNENEE0NDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGxldHRlci1zcGFjaW5nPSI0Ij5TQUJBSTwvdGV4dD48L3N2Zz4=">
+<title>SABAI · 운세·궁합 프로토타입</title>
+<style>
+:root{
+  --bg-dark:#0F0A1F; --bg-deep:#1A1330; --purple:#3E2C5B; --purple-lt:#5D4782;
+  --gold:#D4A444; --gold-lt:#E8C26A; --gold-soft:#F4E4B8;
+  --cream:#FAF6EC; --cream-2:#F2EBD8; --ink:#221A2E; --muted:#7A6E7E;
+  --terra:#B84B3E; --teal:#3E7B7A; --line:rgba(212,164,68,0.18);
+  --shadow-card:0 4px 16px rgba(0,0,0,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg-dark);color:var(--cream);font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","맑은 고딕","Noto Sans KR",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+.app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg-dark);position:relative}
+.brand{padding:18px 20px 8px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.brand-name{font-family:Georgia,serif;font-size:20px;font-weight:700;color:var(--gold);letter-spacing:3px}
+.brand-sub{font-size:10px;color:var(--gold-lt);letter-spacing:1px}
+.stage-indicator{display:flex;gap:6px;padding:12px 20px;justify-content:center}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(212,164,68,0.25)}
+.dot.active{background:var(--gold);box-shadow:0 0 8px var(--gold)}
+.lang-toggle{display:flex;background:rgba(212,164,68,0.12);border-radius:99px;padding:2px;border:1px solid rgba(212,164,68,0.25)}
+.lang-toggle button{padding:4px 10px;background:transparent;color:var(--gold-lt);border:none;border-radius:99px;font-size:10px;cursor:pointer;font-family:inherit;letter-spacing:0.5px;font-weight:700}
+.lang-toggle button.active{background:var(--gold);color:var(--bg-dark)}
+.share-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:linear-gradient(135deg,var(--gold) 0%,#E8C26A 100%);color:var(--bg-dark);border:none;border-radius:10px;font-size:14px;font-weight:700;letter-spacing:2px;cursor:pointer;font-family:inherit;margin-top:14px;box-shadow:0 4px 14px rgba(212,164,68,0.35)}
+.share-btn:hover{transform:translateY(-1px)}
+.share-canvas-wrap{display:none;text-align:center;margin-top:14px}
+.share-canvas-wrap.show{display:block}
+.share-canvas-wrap canvas{max-width:100%;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.4)}
+.share-actions{display:flex;gap:8px;margin-top:10px}
+.share-actions button{flex:1;padding:10px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--gold);cursor:pointer;font-family:inherit;font-size:12px;letter-spacing:1px}
+.share-actions button.primary{background:var(--gold);color:var(--bg-dark);border-color:var(--gold);font-weight:700}
+.stage{display:none;padding:0 20px 60px}
+.stage.active{display:block}
+
+/* --- Form --- */
+.intro{text-align:center;padding:30px 0 20px}
+.intro h1{font-family:Georgia,serif;font-size:34px;color:var(--gold);letter-spacing:2px;margin-bottom:8px}
+.intro p{color:var(--gold-lt);font-size:13px;font-style:italic}
+.form-card{background:var(--cream);color:var(--ink);border-radius:14px;padding:22px 20px;margin:18px 0;box-shadow:var(--shadow-card)}
+.form-title{font-size:14px;font-weight:700;color:var(--terra);letter-spacing:2px;margin-bottom:16px;text-transform:uppercase}
+.form-row{margin-bottom:14px}
+.form-row label{display:block;font-size:11px;font-weight:700;color:var(--purple);margin-bottom:5px;letter-spacing:1px;text-transform:uppercase}
+.form-row input,.form-row select{width:100%;padding:10px 12px;border:1px solid #DDD3BB;border-radius:8px;background:#fff;font-size:14px;color:var(--ink);font-family:inherit}
+.form-row input:focus,.form-row select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,164,68,0.15)}
+.form-row .row{display:flex;gap:10px}
+.form-row .row > *{flex:1}
+.btn{display:block;width:100%;padding:14px;background:var(--purple);color:var(--gold);border:none;border-radius:10px;font-size:14px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all 0.15s;font-family:inherit}
+.btn:hover{background:#4A3568;transform:translateY(-1px)}
+.btn-gold{background:var(--gold);color:var(--bg-dark)}
+.btn-gold:hover{background:var(--gold-lt)}
+.btn-ghost{background:transparent;color:var(--gold-lt);border:1px solid var(--line)}
+.btn-row{display:flex;gap:10px;margin-top:8px}
+.btn-row .btn{flex:1}
+
+/* --- Report cards --- */
+.section-tag{font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin:24px 0 6px;padding:0 4px}
+.section-title{font-family:Georgia,serif;font-size:22px;color:var(--cream);margin-bottom:10px;padding:0 4px}
+.card{background:var(--cream);color:var(--ink);border-radius:12px;padding:18px;margin-bottom:12px;box-shadow:var(--shadow-card)}
+.card-dark{background:var(--bg-deep);color:var(--cream);border:1px solid var(--line)}
+.card h3{font-size:11px;color:var(--terra);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-weight:700}
+.card-dark h3{color:var(--gold)}
+.card .body{font-size:14px;line-height:1.65}
+
+/* --- 명조 4기둥 --- */
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0 4px}
+.pillar{background:var(--bg-deep);color:var(--cream);border-radius:8px;padding:12px 6px;text-align:center;border:1px solid var(--line)}
+.pillar .label{font-size:9px;color:var(--gold);letter-spacing:1px;margin-bottom:6px}
+.pillar .hj{font-family:Georgia,serif;font-size:24px;font-weight:700;color:var(--gold);letter-spacing:-1px;line-height:1.05}
+.pillar .ko{font-size:11px;color:var(--gold-lt);margin-top:4px;letter-spacing:1px}
+
+/* --- 일주 본질 --- */
+.essence{background:linear-gradient(135deg, var(--purple) 0%, var(--bg-deep) 100%);color:var(--cream);padding:20px;border-radius:12px;margin-bottom:12px;border:1px solid var(--line)}
+.essence .ilgan-tag{display:inline-block;padding:3px 10px;background:rgba(212,164,68,0.2);color:var(--gold);font-size:10px;letter-spacing:2px;border-radius:99px;margin-bottom:10px}
+.essence .symbol{font-family:Georgia,serif;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:8px}
+.essence .traits{font-size:13px;color:var(--gold-lt);line-height:1.6}
+
+/* --- Narrative --- */
+.narrative-block{margin-bottom:14px}
+.narrative-block h4{font-size:10px;color:var(--terra);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-weight:700}
+.narrative-block p{font-size:13.5px;line-height:1.7;color:var(--ink)}
+
+/* --- 5행 분포 --- */
+.elem-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:13px}
+.elem-name{width:24px;font-weight:700;color:var(--purple)}
+.elem-bar-bg{flex:1;height:14px;background:#EAE2CD;border-radius:7px;overflow:hidden;position:relative}
+.elem-bar{height:100%;border-radius:7px;transition:width 0.4s}
+.elem-목{background:#5A8C5A}
+.elem-화{background:#C95845}
+.elem-토{background:#B89260}
+.elem-금{background:#A8A499}
+.elem-수{background:#3E5B82}
+.elem-val{font-size:11px;color:var(--muted);min-width:55px;text-align:right;font-family:Georgia,serif}
+.elem-tag{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:700;letter-spacing:1px}
+.tag-deficient{background:rgba(184,75,62,0.15);color:var(--terra)}
+.tag-excess{background:rgba(212,164,68,0.2);color:#A07820}
+
+/* --- Strength box --- */
+.kv-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed #E0D5BB;font-size:13px}
+.kv-row:last-child{border-bottom:none}
+.kv-row .k{color:var(--muted);font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:700}
+.kv-row .v{color:var(--ink);font-weight:600}
+.kv-row .v.gold{color:var(--terra)}
+
+/* --- Lucky --- */
+.lucky-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.lucky-item{background:var(--cream-2);border-left:3px solid var(--gold);padding:10px 12px;border-radius:6px}
+.lucky-item .label{font-size:10px;color:var(--terra);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;font-weight:700}
+.lucky-item .value{font-size:14px;color:var(--ink);font-weight:600}
+.lucky-numbers{display:flex;gap:6px}
+.lucky-numbers span{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--purple);color:var(--gold);border-radius:50%;font-family:Georgia,serif;font-weight:700;font-size:14px}
+
+/* --- Astro big3 --- */
+.astro-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed #E0D5BB}
+.astro-row:last-child{border-bottom:none}
+.astro-glyph{font-family:Georgia,serif;font-size:20px;color:var(--gold);width:32px;text-align:center}
+.astro-info{flex:1;margin-left:8px}
+.astro-info .name{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.astro-info .sign{font-size:14px;color:var(--ink);font-weight:600}
+.astro-deg{font-family:Georgia,serif;color:var(--purple);font-size:13px}
+
+/* --- Today fortune --- */
+.today-score{text-align:center;padding:18px 0 12px}
+.today-score .num{font-family:Georgia,serif;font-size:54px;color:var(--gold);font-weight:700;line-height:1}
+.today-score .of{color:var(--gold-lt);font-size:14px;margin-left:4px}
+.today-score .grade{display:inline-block;margin-top:8px;padding:4px 14px;background:rgba(212,164,68,0.2);color:var(--gold);border-radius:99px;font-size:11px;letter-spacing:2px}
+.today-notes{margin-top:8px}
+.today-note{font-size:12.5px;color:var(--gold-lt);padding:6px 0;border-bottom:1px dashed rgba(212,164,68,0.15);line-height:1.5}
+.today-note:last-child{border-bottom:none}
+.today-note::before{content:"· ";color:var(--gold)}
+
+/* --- Bio chart --- */
+.bio-chart{position:relative;height:160px;margin:8px 0;background:var(--cream-2);border-radius:8px;overflow:hidden}
+.bio-legend{display:flex;gap:14px;padding:8px 0 4px;font-size:11px;justify-content:center}
+.bio-legend span{display:flex;align-items:center;gap:5px;color:var(--muted)}
+.bio-legend i{display:inline-block;width:10px;height:3px;border-radius:2px}
+.bio-today-vals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.bio-val{text-align:center;padding:8px;background:var(--cream-2);border-radius:6px}
+.bio-val .lab{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.bio-val .num{font-family:Georgia,serif;font-size:18px;color:var(--purple);font-weight:700;margin-top:2px}
+.bio-val .num.pos{color:#3E7B7A}
+.bio-val .num.neg{color:var(--terra)}
+
+/* --- Compatibility --- */
+.compat-hero{background:linear-gradient(135deg, var(--purple) 0%, var(--bg-deep) 100%);color:var(--cream);text-align:center;padding:30px 20px;border-radius:12px;margin-bottom:14px;border:1px solid var(--line)}
+.compat-hero .label{font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+.compat-hero .score{font-family:Georgia,serif;font-size:64px;color:var(--gold);font-weight:700;line-height:1}
+.compat-hero .of100{color:var(--gold-lt);font-size:18px;margin-left:4px}
+.compat-hero .grade-tag{display:inline-block;margin-top:14px;padding:6px 18px;background:var(--gold);color:var(--bg-dark);border-radius:99px;font-size:12px;font-weight:700;letter-spacing:2px}
+
+.compat-tabs{display:flex;gap:6px;margin-bottom:10px}
+.compat-tabs button{flex:1;padding:8px;border:1px solid var(--line);background:transparent;color:var(--gold-lt);border-radius:8px;font-size:11px;letter-spacing:1px;cursor:pointer;font-family:inherit}
+.compat-tabs button.active{background:var(--gold);color:var(--bg-dark);border-color:var(--gold);font-weight:700}
+
+.compat-pair{display:grid;grid-template-columns:1fr 24px 1fr;gap:6px;align-items:center;padding:12px 8px;background:var(--cream-2);border-radius:8px;margin-bottom:10px}
+.compat-pair .name{font-size:13px;font-weight:700;color:var(--purple);text-align:center}
+.compat-pair .vs{text-align:center;font-family:Georgia,serif;font-style:italic;color:var(--gold);font-size:14px}
+
+.bd-list{margin-top:8px}
+.bd-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px dashed #E0D5BB;font-size:12.5px;line-height:1.5}
+.bd-row:last-child{border-bottom:none}
+.bd-delta{font-family:Georgia,serif;font-weight:700;min-width:42px;text-align:right}
+.bd-delta.pos{color:#3E7B7A}
+.bd-delta.neg{color:var(--terra)}
+.bd-delta.zero{color:var(--muted)}
+.bd-tag{font-size:10px;color:var(--terra);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:2px}
+.bd-note{color:var(--ink)}
+
+/* --- Footer/nav --- */
+.actions{padding:20px 0 8px}
+.disclaimer{text-align:center;color:var(--muted);font-size:10px;margin:20px 0 8px;font-style:italic}
+
+/* --- Print --- */
+@media print {
+  body{background:#fff}.app{box-shadow:none}.btn{display:none}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="brand">
+    <div>
+      <div class="brand-name">SABAI</div>
+      <div class="brand-sub">ส บ า ย · 사 바 이</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div class="lang-toggle" id="lang-toggle">
+        <button data-lang="ko" class="active">한</button>
+        <button data-lang="th">ไทย</button>
+      </div>
+    </div>
+  </header>
+  <div class="stage-indicator">
+    <div class="dot active" data-step="1"></div>
+    <div class="dot" data-step="2"></div>
+    <div class="dot" data-step="3"></div>
+    <div class="dot" data-step="4"></div>
+    <div class="dot" data-step="5"></div>
+  </div>
+
+  <!-- STAGE 1: Person 1 input -->
+  <section class="stage active" id="stage-1">
+    <div class="intro">
+      <h1>SABAI</h1>
+      <p>당신의 운명·운세·궁합을 한 곳에서</p>
+    </div>
+    <div class="form-card">
+      <div class="form-title">본인 정보 입력</div>
+      <div class="form-row">
+        <label>호칭/이름</label>
+        <input type="text" id="p1-name" value="문태현">
+      </div>
+      <div class="form-row">
+        <label>성별</label>
+        <select id="p1-gender">
+          <option value="M">남</option>
+          <option value="F">여</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>생년월일 (양력)</label>
+        <input type="date" id="p1-birth" value="1972-04-03">
+      </div>
+      <div class="form-row">
+        <label>출생 시각</label>
+        <input type="time" id="p1-time" value="02:00">
+      </div>
+      <div class="form-row">
+        <label>출생지</label>
+        <div class="row">
+          <input type="text" id="p1-place" value="경기도 구리">
+          <select id="p1-tz">
+            <option value="9">한국 / 일본</option>
+            <option value="8">중국 / 홍콩 / 대만 / 싱가포르 / 필리핀 / 말레이시아</option>
+            <option value="7">태국 / 베트남 / 인도네시아 / 캄보디아</option>
+            <option value="5.5">인도</option>
+            <option value="10">호주 (시드니·멜버른)</option>
+            <option value="1">유럽 중부 (독일·프랑스·이탈리아)</option>
+            <option value="0">영국 / 포르투갈</option>
+            <option value="-5">미국 동부 (뉴욕)</option>
+            <option value="-8">미국 서부 (LA·샌프란시스코)</option>
+            <option value="0">기타 (모를 때)</option>
+          </select>
+        </div>
+        <details style="margin-top:8px">
+          <summary style="font-size:11px;color:var(--muted);cursor:pointer;font-style:italic">고급 설정 — 정확한 위치 (선택)</summary>
+          <div style="margin-top:10px;padding:10px;background:var(--cream-2);border-radius:6px;border-left:3px solid var(--gold)">
+            <div style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:4px">★ 출생지의 위도·경도를 입력하세요</div>
+            <div style="font-size:10.5px;color:var(--muted);line-height:1.5">사주 시주(時柱) 계산을 진태양시 기준으로 더 정확히 보정합니다. 출생 도시명을 Google에서 검색하면 위도·경도가 나옵니다. 모르면 그대로 두셔도 무방합니다.</div>
+            <div class="row" style="margin-top:8px">
+              <input type="number" id="p1-lat" step="0.001" value="37.594" placeholder="위도 (예: 37.594)">
+              <input type="number" id="p1-lon" step="0.001" value="127.140" placeholder="경도 (예: 127.140)">
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="form-row">
+        <label>★ 관상 분석용 사진 (선택, 본인만)</label>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:8px;font-style:italic">정면·측면 2장 모두 업로드 시 정확도 ↑ · 사진은 폰에서만 처리</div>
+        <div class="row" style="gap:8px">
+          <div style="flex:1">
+            <div style="font-size:10px;color:var(--purple);font-weight:700;margin-bottom:4px">정면 사진</div>
+            <input type="file" id="p1-photo-front" accept="image/*" onchange="handlePhoto(1,'front')" style="font-size:11px;width:100%">
+            <div id="p1-photo-front-preview" style="margin-top:6px;display:none;text-align:center">
+              <img id="p1-photo-front-img" style="width:100%;max-height:130px;object-fit:cover;border-radius:6px;border:2px solid var(--gold)">
+            </div>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:10px;color:var(--purple);font-weight:700;margin-bottom:4px">측면 사진</div>
+            <input type="file" id="p1-photo-side" accept="image/*" onchange="handlePhoto(1,'side')" style="font-size:11px;width:100%">
+            <div id="p1-photo-side-preview" style="margin-top:6px;display:none;text-align:center">
+              <img id="p1-photo-side-img" style="width:100%;max-height:130px;object-fit:cover;border-radius:6px;border:2px solid var(--gold)">
+            </div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:6px;font-style:italic">정면: 자연광·무표정·이마 노출 · 측면: 옆모습 90°</div>
+      </div>
+      <button class="btn" onclick="onSubmit(1)">분석 시작 →</button>
+    </div>
+    <div class="disclaimer">본 프로토타입은 알고리즘 시연용이며, 실제 운세는 참고용으로만 사용해주세요.</div>
+  </section>
+
+  <!-- STAGE 2: Person 1 report -->
+  <section class="stage" id="stage-2">
+    <div id="report-1"></div>
+    <div class="actions">
+      <button class="btn btn-gold" onclick="gotoStage(3)">여친(상대) 정보 입력 →</button>
+      <div class="btn-row" style="margin-top:8px">
+        <button class="btn btn-ghost" onclick="gotoStage(1)">← 다시 입력</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 3: Person 2 input -->
+  <section class="stage" id="stage-3">
+    <div class="intro">
+      <h1 style="font-size:22px">상대 정보 입력</h1>
+      <p>두 사람의 궁합을 분석합니다</p>
+    </div>
+    <div class="form-card">
+      <div class="form-title">상대 정보</div>
+      <div class="form-row">
+        <label>호칭/이름</label>
+        <input type="text" id="p2-name" value="พรพรรณ">
+      </div>
+      <div class="form-row">
+        <label>성별</label>
+        <select id="p2-gender">
+          <option value="M">남</option>
+          <option value="F" selected>여</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>생년월일 (양력)</label>
+        <input type="date" id="p2-birth" value="1992-12-16">
+      </div>
+      <div class="form-row">
+        <label>출생 시각</label>
+        <input type="time" id="p2-time" value="08:00">
+      </div>
+      <div class="form-row">
+        <label>출생지</label>
+        <div class="row">
+          <input type="text" id="p2-place" value="우본라차타니">
+          <select id="p2-tz">
+            <option value="9">한국 / 일본</option>
+            <option value="8">중국 / 홍콩 / 대만 / 싱가포르 / 필리핀 / 말레이시아</option>
+            <option value="7" selected>태국 / 베트남 / 인도네시아 / 캄보디아</option>
+            <option value="5.5">인도</option>
+            <option value="10">호주 (시드니·멜버른)</option>
+            <option value="1">유럽 중부 (독일·프랑스·이탈리아)</option>
+            <option value="0">영국 / 포르투갈</option>
+            <option value="-5">미국 동부 (뉴욕)</option>
+            <option value="-8">미국 서부 (LA·샌프란시스코)</option>
+            <option value="0">기타 (모를 때)</option>
+          </select>
+        </div>
+        <details style="margin-top:8px">
+          <summary style="font-size:11px;color:var(--muted);cursor:pointer;font-style:italic">고급 설정 — 정확한 위치 (선택)</summary>
+          <div style="margin-top:10px;padding:10px;background:var(--cream-2);border-radius:6px;border-left:3px solid var(--gold)">
+            <div style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:4px">★ 출생지의 위도·경도를 입력하세요</div>
+            <div style="font-size:10.5px;color:var(--muted);line-height:1.5">사주 시주(時柱) 계산을 진태양시 기준으로 더 정확히 보정합니다. 출생 도시명을 Google에서 검색하면 위도·경도가 나옵니다. 모르면 그대로 두셔도 무방합니다.</div>
+            <div class="row" style="margin-top:8px">
+              <input type="number" id="p2-lat" step="0.001" value="15.230" placeholder="위도 (예: 15.230)">
+              <input type="number" id="p2-lon" step="0.001" value="104.857" placeholder="경도 (예: 104.857)">
+            </div>
+          </div>
+        </details>
+      </div>
+      <button class="btn" onclick="onSubmit(2)">상대 분석 →</button>
+      <button class="btn btn-ghost" style="margin-top:8px" onclick="gotoStage(2)">← 본인 리포트로</button>
+    </div>
+  </section>
+
+  <!-- STAGE 4: Person 2 report -->
+  <section class="stage" id="stage-4">
+    <div id="report-2"></div>
+    <div class="actions">
+      <button class="btn btn-gold" onclick="renderCompat();gotoStage(5)">★ 두 사람 궁합 보기 →</button>
+      <button class="btn btn-ghost" style="margin-top:8px" onclick="gotoStage(3)">← 다시 입력</button>
+    </div>
+  </section>
+
+  <!-- STAGE 5: Compatibility -->
+  <section class="stage" id="stage-5">
+    <div id="compat-view"></div>
+    <div class="actions">
+      <button class="share-btn" onclick="shareCard()" id="share-trigger">★ 결과 카드 공유</button>
+      <div id="share-card-wrap" class="share-canvas-wrap">
+        <canvas id="share-canvas" width="760" height="1340"></canvas>
+        <div class="share-actions">
+          <button class="primary" onclick="downloadCard()">이미지 다운로드</button>
+          <button onclick="shareNative()">기타 앱으로 공유</button>
+          <button onclick="closeShareCard()">닫기</button>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:14px">
+        <button class="btn btn-ghost" onclick="gotoStage(2)">← 본인 리포트</button>
+        <button class="btn btn-ghost" onclick="gotoStage(1)">처음으로</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+"use strict";
+
+// ============================================================================
+// 1. Constants
+// ============================================================================
+const GAN = ["갑","을","병","정","무","기","경","신","임","계"];
+const GAN_HJ = ["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"];
+const JI = ["자","축","인","묘","진","사","오","미","신","유","술","해"];
+const JI_HJ = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+const GAN_ELEM = ["목","목","화","화","토","토","금","금","수","수"];
+const GAN_YY = ["+","-","+","-","+","-","+","-","+","-"];
+const JI_ELEM = ["수","토","목","목","토","화","화","토","금","금","토","수"];
+const JI_HIDDEN = [
+  ["수"],["토","수","금"],["목","화","토"],["목"],
+  ["토","목","수"],["화","토","금"],["화","토"],
+  ["토","화","목"],["금","수","토"],["금"],
+  ["토","금","화"],["수","목"],
+];
+const SIGNS = ["양자리","황소자리","쌍둥이자리","게자리","사자자리","처녀자리",
+               "천칭자리","전갈자리","사수자리","염소자리","물병자리","물고기자리"];
+const SIGN_GLYPH = ["♈","♉","♊","♋","♌","♍","♎","♏","♐","♑","♒","♓"];
+const SIGN_ELEM = ["화","토","공기","수","화","토","공기","수","화","토","공기","수"];
+
+const SHENG_TO = {목:"화",화:"토",토:"금",금:"수",수:"목"};
+const SHENG_BY = {목:"수",화:"목",토:"화",금:"토",수:"금"};
+const KE_TO = {목:"토",화:"금",토:"수",금:"목",수:"화"};
+const KE_BY = {목:"금",화:"수",토:"목",금:"화",수:"토"};
+
+const LIUHE = new Set(["0,1","2,11","3,10","4,9","5,8","6,7"]);
+const LIUCHONG = new Set(["0,6","1,7","2,8","3,9","4,10","5,11"]);
+const SANHE = [[0,4,8],[2,6,10],[1,5,9],[3,7,11]];
+const SANHE_ELEM = ["수","화","금","목"];
+const GANHE = {"0,5":"토","1,6":"금","2,7":"수","3,8":"목","4,9":"화"};
+const GANCHONG = new Set(["0,6","1,7","2,8","3,9"]);
+
+const ILGAN_PROFILE = [
+  ["거대한 나무·곧은 큰 줄기","독립적·진취적·곧은 의지·리더십·완고함"],
+  ["덩굴·꽃·여린 풀","유연·사회성·친화·표현력·우유부단"],
+  ["태양·큰 불","열정·낙관·솔직·따뜻함·다혈질"],
+  ["촛불·등잔불","섬세·헌신·예의·내면 강함·예민"],
+  ["산·큰 흙","신중·믿음직·뚝심·보수·고집"],
+  ["정원의 흙·논밭","포용력·실용·세심·소심"],
+  ["강철·큰 칼","결단·정의감·의리·강직·냉정"],
+  ["보석·세공된 금속","예민·완벽주의·심미안·예술성·까칠함"],
+  ["강·큰 바다","지혜·포용·통찰·깊이·변덕"],
+  ["이슬·시냇물","맑음·총명·순수·예술감·예민·우유부단"],
+];
+const ILJI_MOOD = [
+  "한밤의 물기 — 깊은 사색·비밀·지혜",
+  "겨울 끝 흙 — 인내·누적·끈기",
+  "이른 봄의 시작 — 도전·개척·직진",
+  "활짝 핀 봄 — 사교·표현·예술",
+  "늦봄 흙 — 변화 적응·수용·다재다능",
+  "초여름 불 — 활발·추진력·직관",
+  "한여름 절정 — 화려함·인기·외향",
+  "늦여름 휴식 — 신중·보살핌·안정 추구",
+  "초가을 결실 — 리더·야망·추진",
+  "한가을 수확 — 세련·미적 감각·분석",
+  "늦가을 흙 — 침착·묵직함·신뢰",
+  "초겨울 물 — 깊은 정·헌신·직관",
+];
+const LUCKY = {
+  목:{colors:["녹색","청록","에메랄드"],dir:"동쪽",nums:[3,8],day:"목요일",season:"봄"},
+  화:{colors:["빨강","핑크","자홍","주황"],dir:"남쪽",nums:[2,7],day:"화요일",season:"여름"},
+  토:{colors:["노랑","갈색","베이지","황토"],dir:"중앙",nums:[5,10],day:"토요일",season:"환절기"},
+  금:{colors:["흰색","은색","금색"],dir:"서쪽",nums:[4,9],day:"금요일",season:"가을"},
+  수:{colors:["검정","남색","짙은 파랑"],dir:"북쪽",nums:[1,6],day:"수요일",season:"겨울"},
+};
+const ELEM_HUMAN = {목:"나무·성장의 기운",화:"불·표현의 기운",토:"흙·중심의 기운",금:"금속·결단의 기운",수:"물·지혜의 기운"};
+const ELEM_BODY = {목:"간·담·신경",화:"심장·소장·혈관",토:"비·위·근육",금:"폐·대장·피부",수:"신장·방광·뼈"};
+const ELEM_PRACTICE = {
+  목:"산책·식물 가꾸기·아침 일찍 일어나기",
+  화:"붉은 음식·운동·웃음·따뜻한 옷",
+  토:"규칙적 식사·요가·정원 일",
+  금:"호흡 운동·정리정돈·금속 액세서리",
+  수:"검정·남색 옷·해산물·명상",
+};
+const SHIPSIN_BONUS = {
+  M:{정재:12,편재:8,식신:7,상관:3,정관:4,정인:4,편인:2},
+  F:{정관:12,편관:7,정인:6,편인:5,정재:4,식신:3},
+};
+
+function np(a,b){return a<b ? a+","+b : b+","+a;}
+
+// ============================================================================
+// 2. Astronomy
+// ============================================================================
+function jdn(y,m,d){
+  const a = Math.floor((14-m)/12);
+  const yy = y+4800-a, mm = m+12*a-3;
+  return d + Math.floor((153*mm+2)/5) + 365*yy + Math.floor(yy/4) - Math.floor(yy/100) + Math.floor(yy/400) - 32045;
+}
+function sunLong(jd){
+  const T = (jd-2451545)/36525;
+  const L0 = ((280.46646 + 36000.76983*T + 0.0003032*T*T) % 360 + 360) % 360;
+  const M = ((357.52911 + 35999.05029*T - 0.0001537*T*T) % 360 + 360) % 360;
+  const Mr = M*Math.PI/180;
+  const C = (1.914602 - 0.004817*T)*Math.sin(Mr)
+          + (0.019993 - 0.000101*T)*Math.sin(2*Mr)
+          + 0.000289*Math.sin(3*Mr);
+  return ((L0+C)%360+360)%360;
+}
+function solarTermJd(year, target){
+  let approx = Math.floor((80 + target*365.25/360) % 365.25);
+  if(approx<1) approx+=365;
+  const base = jdn(year,1,1) + approx - 1;
+  function diff(j){
+    const v = sunLong(j) - target;
+    return ((v+180)%360+360)%360 - 180;
+  }
+  let best=base-8, ba=999, j=base-8;
+  while(j<=base+8){
+    const d=Math.abs(diff(j));
+    if(d<ba){ba=d;best=j;}
+    j+=0.05;
+  }
+  let a=best-0.1, b=best+0.1;
+  for(let i=0;i<40;i++){
+    const m=(a+b)/2;
+    if(diff(a)*diff(m)<=0) b=m; else a=m;
+  }
+  return (a+b)/2;
+}
+function moonLong(jd){
+  const T=(jd-2451545)/36525;
+  const D = ((297.8501921 + 445267.1114034*T - 0.0018819*T*T)%360+360)%360 *Math.PI/180;
+  const M = ((357.5291092 + 35999.0502909*T)%360+360)%360 *Math.PI/180;
+  const Mp = ((134.9633964 + 477198.8675055*T + 0.0087414*T*T)%360+360)%360 *Math.PI/180;
+  const F = ((93.2720950 + 483202.0175233*T - 0.0036539*T*T)%360+360)%360 *Math.PI/180;
+  const L = ((218.3164477 + 481267.88123421*T - 0.0015786*T*T)%360+360)%360;
+  const dL = 6.288774*Math.sin(Mp) + 1.274027*Math.sin(2*D-Mp)
+    + 0.658314*Math.sin(2*D) + 0.213618*Math.sin(2*Mp)
+    - 0.185116*Math.sin(M) - 0.114332*Math.sin(2*F)
+    + 0.058793*Math.sin(2*D-2*Mp) + 0.057066*Math.sin(2*D-M-Mp)
+    + 0.053322*Math.sin(2*D+Mp) + 0.045758*Math.sin(2*D-M)
+    - 0.040923*Math.sin(M-Mp) - 0.034720*Math.sin(D)
+    - 0.030383*Math.sin(M+Mp) + 0.015327*Math.sin(2*D-2*F)
+    - 0.012528*Math.sin(Mp+2*F) + 0.010980*Math.sin(Mp-2*F);
+  return ((L+dL)%360+360)%360;
+}
+function gmst(jd){
+  const T=(jd-2451545)/36525;
+  return ((280.46061837 + 360.98564736629*(jd-2451545) + 0.000387933*T*T - T*T*T/38710000)%360+360)%360;
+}
+function ascLong(jd, lat, lon){
+  const lst = ((gmst(jd)+lon)%360+360)%360;
+  const eps = 23.4392911*Math.PI/180, ra=lst*Math.PI/180, phi=lat*Math.PI/180;
+  const y = -Math.cos(ra);
+  const x = Math.sin(ra)*Math.cos(eps) + Math.tan(phi)*Math.sin(eps);
+  return (Math.atan2(y,x)*180/Math.PI+360)%360;
+}
+function utcJd(p){
+  const [y,mo,d] = p.birth.split("-").map(Number);
+  const [hh,mm] = p.time.split(":").map(Number);
+  return jdn(y,mo,d) + (hh-p.tz)/24 + mm/1440 - 0.5;
+}
+function longToSign(lon){
+  const si = Math.floor(lon/30);
+  return {sign:SIGNS[si], deg:lon-si*30, idx:si, glyph:SIGN_GLYPH[si]};
+}
+
+// ============================================================================
+// 3. Saju 4-pillar
+// ============================================================================
+function sajuYear(y,mo,d,hh,mi,tz){
+  const jdEvent = jdn(y,mo,d) + (hh-tz)/24 + mi/1440;
+  const jdIp = solarTermJd(y, 315);
+  const yr = jdEvent>=jdIp ? y : y-1;
+  return [((yr-4)%60+60)%60, yr];
+}
+function sajuMonth(y,mo,d,hh,mi,tz, yearStem){
+  const terms = [[315,2],[345,3],[15,4],[45,5],[75,6],[105,7],[135,8],[165,9],
+                 [195,10],[225,11],[255,0],[285,1]];
+  const jdEvent = jdn(y,mo,d) + (hh-tz)/24 + mi/1440;
+  const bs = [];
+  for(const yy of [y-1,y,y+1])
+    for(const [t,br] of terms)
+      bs.push([solarTermJd(yy,t), br, yy]);
+  bs.sort((a,b)=>a[0]-b[0]);
+  let chosen=null;
+  for(const r of bs){ if(r[0]<=jdEvent) chosen=r; else break; }
+  const branch = chosen[1];
+  const inStemMap = {0:2,5:2,1:4,6:4,2:6,7:6,3:8,8:8,4:0,9:0};
+  const inStem = inStemMap[yearStem];
+  const seq = [2,3,4,5,6,7,8,9,10,11,0,1];
+  return [((inStem + seq.indexOf(branch))%10+10)%10, branch];
+}
+function sajuDay(y,mo,d,hh){
+  let bd = new Date(Date.UTC(y,mo-1,d));
+  if(hh>=23) bd = new Date(bd.getTime() + 86400000);
+  const j = jdn(bd.getUTCFullYear(), bd.getUTCMonth()+1, bd.getUTCDate());
+  return ((10 + j - jdn(1900,1,1))%60+60)%60;
+}
+function sajuHour(dayStem, hh, mi){
+  const h = hh + mi/60;
+  const branch = Math.floor(((h+1)%24)/2);
+  const ziStemMap = {0:0,5:0,1:2,6:2,2:4,7:4,3:6,8:6,4:8,9:8};
+  return [((ziStemMap[dayStem]+branch)%10+10)%10, branch];
+}
+function makePillar(stem, branch){
+  return {
+    stem:GAN[stem], branch:JI[branch],
+    stemHj:GAN_HJ[stem], branchHj:JI_HJ[branch],
+    stemIdx:stem, branchIdx:branch,
+  };
+}
+function computeSaju(p){
+  const [y,mo,d] = p.birth.split("-").map(Number);
+  const [hh,mi] = p.time.split(":").map(Number);
+  const [yrIdx, eff] = sajuYear(y,mo,d,hh,mi,p.tz);
+  const yr = makePillar(yrIdx%10, yrIdx%12);
+  const [ms,mb] = sajuMonth(y,mo,d,hh,mi,p.tz, yrIdx%10);
+  const dIdx = sajuDay(y,mo,d,hh);
+  const [hs,hb] = sajuHour(dIdx%10, hh, mi);
+  return {year:yr, month:makePillar(ms,mb), day:makePillar(dIdx%10, dIdx%12), hour:makePillar(hs,hb)};
+}
+function todayPillar(today){
+  const [y,m,d] = today.split("-").map(Number);
+  const idx = ((10 + jdn(y,m,d) - jdn(1900,1,1))%60+60)%60;
+  return [idx%10, idx%12];
+}
+
+// ============================================================================
+// 4. Astro big3
+// ============================================================================
+function computeAstro(p){
+  const jd = utcJd(p);
+  const sun = sunLong(jd), moon = moonLong(jd), asc = ascLong(jd, p.lat, p.lon);
+  return {sun:longToSign(sun), moon:longToSign(moon), asc:longToSign(asc)};
+}
+
+// ============================================================================
+// 5. Biorhythm
+// ============================================================================
+function biorhythm(birthStr, todayStr){
+  const [by,bm,bd] = birthStr.split("-").map(Number);
+  const [ty,tm,td] = todayStr.split("-").map(Number);
+  const days = jdn(ty,tm,td) - jdn(by,bm,bd);
+  return {
+    days,
+    p: Math.round(Math.sin(2*Math.PI*days/23)*1000)/10,
+    e: Math.round(Math.sin(2*Math.PI*days/28)*1000)/10,
+    i: Math.round(Math.sin(2*Math.PI*days/33)*1000)/10,
+  };
+}
+function biorhythmCompat(b1, b2){
+  const p = b1.p*b2.p/100, e = b1.e*b2.e/100, i = b1.i*b2.i/100;
+  return {p:r1(p), e:r1(e), i:r1(i), total:r1((p+e+i)/3)};
+}
+function r1(v){return Math.round(v*10)/10;}
+
+// ============================================================================
+// 6. Interpretation
+// ============================================================================
+function elementDist(saju){
+  const c = {목:0,화:0,토:0,금:0,수:0};
+  for(const k of ["year","month","day","hour"]){
+    const p = saju[k];
+    c[GAN_ELEM[p.stemIdx]] += 1.0;
+    const hidden = JI_HIDDEN[p.branchIdx];
+    c[hidden[0]] += 1.0;
+    for(let i=1;i<hidden.length;i++) c[hidden[i]] += 0.3;
+  }
+  for(const k in c) c[k] = Math.round(c[k]*10)/10;
+  return c;
+}
+function shenStrength(saju){
+  const de = GAN_ELEM[saju.day.stemIdx];
+  const dist = elementDist(saju);
+  const me = dist[de] + dist[SHENG_BY[de]];
+  const out = dist[SHENG_TO[de]] + dist[KE_TO[de]] + dist[KE_BY[de]];
+  let s = "균형";
+  if(me >= out*1.3) s = "에너지 강함";
+  else if(out >= me*1.3) s = "에너지 약함";
+  return {strength:s, me:r1(me), out:r1(out)};
+}
+function yongshin(saju){
+  const de = GAN_ELEM[saju.day.stemIdx];
+  const ss = shenStrength(saju);
+  if(ss.strength === "에너지 강함") return {y:SHENG_TO[de], s:KE_TO[de]};
+  if(ss.strength === "에너지 약함") return {y:SHENG_BY[de], s:de};
+  const dist = elementDist(saju);
+  let minE = "목", minV = 999;
+  for(const e of ["목","화","토","금","수"])
+    if(dist[e]<minV){ minV=dist[e]; minE=e; }
+  return {y:minE, s:de};
+}
+function gyeokguk(saju){
+  const de = GAN_ELEM[saju.day.stemIdx];
+  const main = JI_HIDDEN[saju.month.branchIdx][0];
+  if(main===de) return "독립·자립형 — 자기 길을 가는 사람";
+  if(SHENG_TO[de]===main) return "표현·창의형 — 자신을 펼치는 사람";
+  if(SHENG_TO[main]===de) return "학자·사색형 — 깊이 파고드는 사람";
+  if(KE_TO[de]===main) return "실리·재물형 — 결과를 만드는 사람";
+  if(KE_TO[main]===de) return "조직·명예형 — 책임감 있는 사람";
+  return "복합형 — 여러 강점을 가진 사람";
+}
+function interpretSaju(saju){
+  const ds = saju.day.stemIdx, db = saju.day.branchIdx;
+  const ss = shenStrength(saju);
+  const yong = yongshin(saju);
+  return {
+    ilganSym:ILGAN_PROFILE[ds][0], ilganTraits:ILGAN_PROFILE[ds][1],
+    iljiMood:ILJI_MOOD[db],
+    element:GAN_ELEM[ds]+GAN_YY[ds],
+    distribution:elementDist(saju),
+    strength:ss.strength, me:ss.me, out:ss.out,
+    yongshin:yong.y, secondary:yong.s,
+    gyeokguk:gyeokguk(saju),
+    lucky:LUCKY[yong.y], lucky2:LUCKY[yong.s],
+  };
+}
+function dailyFortune(saju, today){
+  const [ts,tb] = todayPillar(today);
+  const ds = saju.day.stemIdx, db = saju.day.branchIdx;
+  const notes = []; let score = 50;
+  if(np(ds,ts) in GANHE){score+=12; notes.push(`본명 일간(${GAN[ds]})과 오늘 천간(${GAN[ts]}) 합 — 호의·인연 유리`);}
+  if(GANCHONG.has(np(ds,ts))){score-=10; notes.push(`본명 일간과 오늘 천간 충 — 자기 주장 자제`);}
+  if(LIUHE.has(np(db,tb))){score+=14; notes.push(`본명 일지와 오늘 일지 육합 — 정서적으로 평온`);}
+  if(LIUCHONG.has(np(db,tb))){score-=14; notes.push(`본명 일지와 오늘 일지 충 — 변동 조심, 큰 결정 미루기`);}
+  for(const tri of SANHE)
+    if(tri.includes(db) && tri.includes(tb) && db!==tb){
+      score+=6; notes.push(`일지 반합 — 사회적 시너지`); break;
+    }
+  const de=GAN_ELEM[ds], te=GAN_ELEM[ts];
+  if(SHENG_TO[te]===de){score+=5; notes.push(`오늘 기운(${te})이 본인 일간(${de})을 도움 — 컨디션 좋음`);}
+  else if(SHENG_TO[de]===te){score+=2; notes.push(`본인이 오늘 기운에 베푸는 날 — 도움 청해도 좋음`);}
+  else if(KE_TO[te]===de){score-=6; notes.push(`오늘 기운(${te})이 본인을 극함 — 무리 금물`);}
+  const yong = yongshin(saju).y;
+  if(te===yong){score+=8; notes.push(`오늘 천간 오행이 본인 용신(${yong}) — 길일 ★`);}
+  return {score:Math.max(0,Math.min(100,score)), notes, ts, tb};
+}
+function narrate(saju, interp){
+  const ds = saju.day.stemIdx, db = saju.day.branchIdx;
+  const de = GAN_ELEM[ds];
+  const sym = interp.ilganSym, traits = interp.ilganTraits;
+  const moodShort = ILJI_MOOD[db].split("—")[0].trim();
+  const yong = interp.yongshin, sec = interp.secondary;
+  const dist = interp.distribution;
+  let strongE = "목", strongV = -1;
+  for(const e of ["목","화","토","금","수"])
+    if(dist[e]>strongV){strongV=dist[e]; strongE=e;}
+  const weakEs = [];
+  for(const e of ["목","화","토","금","수"])
+    if(dist[e]<0.5) weakEs.push(e);
+
+  const paras = [];
+
+  // 1) 한 줄 본질
+  const traitParts = traits.split("·");
+  paras.push(["당신은 한 마디로",
+    `${moodShort}에 자란 ${sym}. ${traitParts[0]}하면서도 ${traitParts[1]||""}한 사람.`]);
+
+  // 2) 성격
+  const meOrOut = interp.strength==="에너지 강함"
+    ? "스스로 추진하고 결정하는 힘이 강함"
+    : (interp.strength==="에너지 약함" ? "주변의 지원·관계 속에서 빛을 발함" : "자립과 협력의 균형이 잡혀 있음");
+  let p2 = `당신은 ${sym}와 같은 본질을 가진 사람. ${traits} 같은 성향이 두드러집니다. 사주 안에서 ${strongE}(${ELEM_HUMAN[strongE]})이 가장 풍부하여 ${meOrOut}.`;
+  if(strongE !== de){
+    if(SHENG_TO[strongE]===de) p2 += ` 특히 ${strongE} 기운이 당신을 끊임없이 키워주는 구조라, 사색·내면이 깊어지는 방향으로 성장합니다.`;
+    else if(SHENG_TO[de]===strongE) p2 += ` 다만 ${strongE}이 당신의 에너지를 빼가는 자리에 있어, 자신을 표현하고 소진하는 일이 잦습니다.`;
+  }
+  paras.push(["당신의 성격", p2]);
+
+  // 3) 결핍
+  const p3 = weakEs.length
+    ? `반면 ${weakEs.join(" · ")} 기운이 거의 없거나 매우 약합니다. 이를 보완하는 것이 인생의 질을 좌우합니다. 가장 필요한 보완 오행 = ${yong} (${ELEM_HUMAN[yong]}), 보조 = ${sec}.`
+    : `5행이 비교적 고르게 분포. 1순위 용신은 ${yong} (${ELEM_HUMAN[yong]}).`;
+  paras.push(["당신에게 필요한 것", p3]);
+
+  // 4) 관계
+  const relMap = {
+    목:"곧고 흔들림 없는 신뢰형. 자기 사람을 끌어안고 보호하지만, 본인 또한 따뜻한 햇볕(火) 같은 표현·웃음이 풍부한 상대를 만났을 때 비로소 균형을 이룹니다.",
+    화:"솔직하고 직진형. 감정 표현이 풍부해 매력적이지만, 너무 빨리 달구어졌다 식기 쉽습니다. 차분하고 단단한(土) 사람이나 깊은 영감(木)을 주는 상대가 잘 맞습니다.",
+    토:"묵묵하고 신뢰감 가는 동반자형. 화려함보다 안정을 중시. 결단력 있는(金) 또는 변화를 주는(木) 상대와 보완됩니다.",
+    금:"원칙·정의감 강한 단단한 사람. 차가워 보이나 속은 깊은 정. 표현 풍부한(火) 또는 지혜·포용(水) 있는 상대와 균형.",
+    수:"직관·통찰이 깊은 사람. 표현은 적어도 마음은 넓음. 단단한 의지(金)나 활기 있는 표현(火)의 상대와 깊은 짝을 이룹니다.",
+  };
+  paras.push(["연애·관계에서", relMap[de]]);
+
+  // 5) 실천
+  const body = dist[strongE]>=4 ? `${ELEM_BODY[strongE]} 부담이 누적되기 쉬움.` : null;
+  let p5 = `용신(${yong})을 일상에 끌어들이는 실천 = ${ELEM_PRACTICE[yong]}.`;
+  if(body) p5 += ` 또한 ${strongE}이 과잉이라 ${body} 의식적으로 관리하세요.`;
+  paras.push(["오늘부터 실천", p5]);
+
+  return paras;
+}
+
+// ============================================================================
+// 7. Compatibility
+// ============================================================================
+function shipsin(self, other){
+  const se = GAN_ELEM[self], oe = GAN_ELEM[other];
+  const same = GAN_YY[self] === GAN_YY[other];
+  if(se===oe) return same?"비견":"겁재";
+  if(SHENG_TO[se]===oe) return same?"식신":"상관";
+  if(SHENG_TO[oe]===se) return same?"편인":"정인";
+  if(KE_TO[se]===oe) return same?"편재":"정재";
+  if(KE_TO[oe]===se) return same?"편관":"정관";
+  return "?";
+}
+function sajuCompat(s1, s2, g1, g2){
+  const bd = [["기본 점수", 50, "모든 사람의 시작점"]];
+  const d1 = s1.day.stemIdx, d2 = s2.day.stemIdx;
+  const pair = np(d1,d2);
+  if(pair in GANHE)
+    bd.push(["본질적 끌림", 15, "성격의 핵심이 자석처럼 끌어당김"]);
+  if(GANCHONG.has(pair))
+    bd.push(["가치관 차이", -12, "생각·가치관이 부딪힐 가능성"]);
+  const db1 = s1.day.branchIdx, db2 = s2.day.branchIdx;
+  if(LIUHE.has(np(db1,db2)))
+    bd.push(["감정 안정감", 18, "함께 있을 때 마음이 편안함"]);
+  if(LIUCHONG.has(np(db1,db2)))
+    bd.push(["일상 마찰", -18, "사소한 일에서 충돌이 잦을 수 있음"]);
+  for(let i=0;i<SANHE.length;i++){
+    const tri = SANHE[i];
+    if(tri.includes(db1) && tri.includes(db2) && db1!==db2){
+      bd.push(["사회적 시너지", 9, "함께 있으면 외부에서도 잘 풀림"]); break;
+    }
+  }
+  const tagWeights = [["가족·환경","year",6,-6,6],["일·커리어","month",4,-4,4],["미래·자녀","hour",3,-3,3]];
+  for(const [tag,k,wHe,wCh,wBan] of tagWeights){
+    const b1 = s1[k].branchIdx, b2 = s2[k].branchIdx;
+    if(LIUHE.has(np(b1,b2))) bd.push([tag+" 잘 맞음", wHe, "이 영역에서 자연스러운 호흡"]);
+    if(LIUCHONG.has(np(b1,b2))) bd.push([tag+" 차이", wCh, "이 영역에서 견해 차이 가능"]);
+    for(let i=0;i<SANHE.length;i++){
+      const tri = SANHE[i];
+      if(tri.includes(b1) && tri.includes(b2) && b1!==b2){
+        bd.push([tag+" 시너지", wBan, "이 영역에서 함께 시너지 발생"]); break;
+      }
+    }
+  }
+  const e1 = GAN_ELEM[d1], e2 = GAN_ELEM[d2];
+  if(SHENG_TO[e1]===e2 || SHENG_TO[e2]===e1){
+    bd.push(["에너지 공급", 8, "한쪽이 다른쪽에게 활력을 줌"]);
+  } else if(KE_TO[e1]===e2 || KE_TO[e2]===e1){
+    bd.push(["에너지 충돌", -5, "서로 눌리는 느낌이 가끔 있음"]);
+  } else if(e1===e2){
+    bd.push(["같은 에너지", 2, "동질감 — 잘 통하지만 자극은 적음"]);
+  }
+  const y1 = yongshin(s1).y, y2 = yongshin(s2).y;
+  if(GAN_ELEM[d2]===y1)
+    bd.push(["★ 결정적 보완", 10, "상대가 당신의 부족한 부분을 정확히 채워줌"]);
+  else if(GAN_ELEM[s2.month.stemIdx]===y1 || GAN_ELEM[s2.hour.stemIdx]===y1)
+    bd.push(["부분적 보완", 5, "상대가 당신에게 필요한 기운을 일부 갖고 있음"]);
+  if(GAN_ELEM[d1]===y2)
+    bd.push(["★ 결정적 보완", 10, "당신이 상대의 부족한 부분을 정확히 채워줌"]);
+  else if(GAN_ELEM[s1.month.stemIdx]===y2 || GAN_ELEM[s1.hour.stemIdx]===y2)
+    bd.push(["부분적 보완", 5, "당신이 상대에게 필요한 기운을 일부 갖고 있음"]);
+  const dist1 = elementDist(s1), dist2 = elementDist(s2);
+  let comp = 0;
+  for(const e of ["목","화","토","금","수"]){
+    const c1 = dist1[e], c2 = dist2[e];
+    let def_s = Math.max(0, 1.5-c1)/1.5;
+    let sup_s = Math.min(2.5, c2)/2.5;
+    if(def_s>0.3 && sup_s>0.3){
+      const v = Math.round(def_s*sup_s*50)/10;
+      if(v>=0.5) comp+=v;
+    }
+    def_s = Math.max(0, 1.5-c2)/1.5;
+    sup_s = Math.min(2.5, c1)/2.5;
+    if(def_s>0.3 && sup_s>0.3){
+      const v = Math.round(def_s*sup_s*50)/10;
+      if(v>=0.5) comp+=v;
+    }
+  }
+  if(comp>0){
+    bd.push(["★ 부족한 부분 보충", Math.round(Math.min(15, comp)*10)/10, "둘이서 서로의 빈 곳을 자연스럽게 메움"]);
+  }
+  const sin12 = shipsin(d1, d2), sin21 = shipsin(d2, d1);
+  const b12 = (SHIPSIN_BONUS[g1]||{})[sin12] || 0;
+  const b21 = (SHIPSIN_BONUS[g2]||{})[sin21] || 0;
+  if(b12) bd.push(["연애 매력 (당신→상대)", b12, "상대가 당신을 매력적으로 느끼는 케미"]);
+  if(b21) bd.push(["연애 매력 (상대→당신)", b21, "당신이 상대를 매력적으로 느끼는 케미"]);
+  let heCount = 0;
+  for(const [c,d,_] of bd){
+    if(d>0 && (c.includes("잘 맞음")||c.includes("안정")||c.includes("끌림"))) heCount++;
+  }
+  if(heCount>=3) bd.push(["여러 영역 동시 호환", 5, "삶의 여러 면에서 동시에 잘 맞음"]);
+  else if(heCount>=2) bd.push(["여러 영역 호환", 3, "두 가지 이상의 영역에서 잘 맞음"]);
+  let total = 0; for(const [_,d,__] of bd) total += d;
+  return {score: Math.max(0, Math.min(100, total)), bd};
+}
+function astroCompat(a1, a2){
+  const bd = [["기본 점수", 50, "모든 사람의 시작점"]];
+  const L = {S1:a1.sun.idx*30+a1.sun.deg, M1:a1.moon.idx*30+a1.moon.deg, A1:a1.asc.idx*30+a1.asc.deg,
+             S2:a2.sun.idx*30+a2.sun.deg, M2:a2.moon.idx*30+a2.moon.deg, A2:a2.asc.idx*30+a2.asc.deg};
+  const pairs = [
+    ["S1","S2","자아 ↔ 자아",8,6],["M1","M2","감정 ↔ 감정",8,8],
+    ["S1","M2","당신 자아 ↔ 상대 감정",8,7],["M1","S2","당신 감정 ↔ 상대 자아",8,7],
+    ["A1","A2","외양 ↔ 외양",6,5],
+  ];
+  const aspects = [[0,"하나처럼 일치",1.0],[60,"잘 맞음",0.5],[90,"마찰",-0.7],[120,"조화",0.9],[180,"대립",-0.4]];
+  for(const [k1,k2,lab,orb,base] of pairs){
+    let d = Math.abs(L[k1]-L[k2])%360;
+    if(d>180) d = 360-d;
+    let matched = false;
+    for(const [a,an,asign] of aspects){
+      if(Math.abs(d-a)<=orb){
+        bd.push([lab, r1(base*asign), an]);
+        matched=true; break;
+      }
+    }
+    if(!matched){
+      for(const [a,an,asign] of aspects){
+        if(Math.abs(d-a)<=orb+5 && asign>0){
+          bd.push([lab+" (약하게)", r1(base*asign*0.4), an + " — 약하게"]); break;
+        }
+      }
+    }
+  }
+  for(const [k1,k2,lab] of [["S1","S2","자아 같은 원소"],["M1","M2","감정 같은 원소"]]){
+    const s1 = Math.floor(L[k1]/30), s2 = Math.floor(L[k2]/30);
+    if(s1!==s2 && SIGN_ELEM[s1]===SIGN_ELEM[s2])
+      bd.push([lab, 3, "같은 " + SIGN_ELEM[s1] + " 원소 — 본능적 호감"]);
+  }
+  let total = 0; for(const [_,d,__] of bd) total += d;
+  return {score: Math.max(0, Math.min(100, total)), bd};
+}
+
+// ============================================================================
+// 8. Rendering
+// ============================================================================
+function todayStr(){
+  // Use a fixed prototype date for consistent demo (matches engine TODAY)
+  return "2026-04-30";
+}
+function fmtPillar(p){
+  return `<div class="pillar"><div class="label">${p.label}</div><div class="hj">${p.pillar.stemHj}<br>${p.pillar.branchHj}</div><div class="ko">${p.pillar.stem}${p.pillar.branch}</div></div>`;
+}
+function computeGwansang(saju, p){
+  // 사주 기반 시드 (사진 자체 분석은 Phase 1 AI 모듈 예정 — 프로토타입은 사주 연동 mock)
+  const ds = saju.day.stemIdx;
+  const elem = GAN_ELEM[ds];
+  const dist = elementDist(saju);
+  const strong = Object.keys(dist).reduce((a,b)=>dist[a]>=dist[b]?a:b);
+  const weak = Object.keys(dist).reduce((a,b)=>dist[a]<=dist[b]?a:b);
+  // 12궁 점수 (사주에 기반한 추정)
+  const baseScore = 7.5;
+  const ss = shenStrength(saju).strength;
+  const strongBonus = ss === "에너지 강함" ? 0.5 : 0;
+  const weakBonus = ss === "에너지 약함" ? -0.3 : 0;
+  function s(base, mod){ return Math.max(5, Math.min(10, Math.round((base + mod) * 10) / 10)); }
+  // 사주 → 관상 부위 매핑 (간이)
+  const palaces = [
+    ["이마(상정)", s(baseScore, strongBonus + (elem==="목"?0.5:0)), "초년 운기·기본 명운"],
+    ["눈썹", s(baseScore, 0.3), "형제·동료·의리"],
+    ["인당(미간)", s(baseScore, 0.5 + strongBonus), "30~40대 운기 흐름"],
+    ["눈", s(baseScore, weakBonus + 0.3), "감정·인내·통제력"],
+    ["와잠", s(baseScore, (saju.hour.branchIdx===1 || saju.hour.branchIdx===4 || saju.hour.branchIdx===7 || saju.hour.branchIdx===10) ? 1.0 : 0.3), "자녀·정신력 ★"],
+    ["코(중정)", s(baseScore, strongBonus + (elem==="금"?0.5:0)), "재백·중년 추진력"],
+    ["인중", s(baseScore, 0.3), "수명·자녀운"],
+    ["입·입술", s(baseScore, weakBonus), "표현·신뢰"],
+    ["턱(하정)", s(baseScore, strongBonus + (elem==="토"?0.5:0)), "노년 안정·부동산"],
+    ["귀", s(baseScore, 0.3), "유년 건강·장수"],
+    ["광대뼈", s(baseScore, strongBonus * 0.5), "추진력·중년 사회운"],
+  ];
+  const total = palaces.reduce((a,r)=>a+r[1], 0);
+  const score = Math.round(total / palaces.length * 10);
+  // 사주-관상 일치도 (사주 강약과 관상 점수 분포의 일관성)
+  const sajuMatch = 85 + Math.round(Math.abs(strongBonus + weakBonus) * 30);
+  // 핵심 메시지
+  const msgs = [];
+  if(ss === "에너지 강함") msgs.push("코·턱이 단단한 자립형 — 본인 의지로 인생을 끌어가는 사람");
+  else if(ss === "에너지 약함") msgs.push("주변·인연의 도움 속에서 가장 빛나는 타입 — 관계 운이 핵심");
+  else msgs.push("자립과 협력의 균형이 잡힌 관상 — 어떤 환경에도 적응");
+  if(dist[weak] < 0.5) msgs.push(weak + " 기운이 명조와 얼굴 모두에서 보충 필요 — " + LUCKY[weak].colors[0] + "·" + LUCKY[weak].dir + " 활용");
+  if(saju.hour.branchIdx===1 || saju.hour.branchIdx===4) msgs.push("와잠 발달 — 자녀·후학·후배 인연이 깊은 흐름");
+  msgs.push("60대 이후 노년 안정운 양호 — 인생 후반에 결실");
+  return { palaces, score, sajuMatch, msgs };
+}
+
+function gradeKor(s){
+  if(s>=80) return "매우 길";
+  if(s>=70) return "길";
+  if(s>=60) return "보통 이상";
+  if(s>=50) return "보통";
+  if(s>=40) return "주의";
+  return "흉";
+}
+
+function renderGwansang(saju, p){
+  const g = computeGwansang(saju, p);
+  const palacesHtml = g.palaces.map(function(row){
+    const score10 = row[1];
+    const stars = "★".repeat(Math.round(score10 / 2)) + "☆".repeat(5 - Math.round(score10 / 2));
+    return '<div class="kv-row"><span class="k">' + row[0] + '</span>' +
+           '<span class="v" style="display:flex;align-items:center;gap:8px">' +
+           '<span style="color:var(--gold);letter-spacing:1px;font-size:11px">' + stars + '</span>' +
+           '<span style="font-family:Georgia,serif;color:var(--purple)">' + score10.toFixed(1) + '</span></span></div>';
+  }).join("");
+  const msgsHtml = g.msgs.map(function(m){
+    return '<div style="font-size:13px;color:var(--ink);padding:8px 0;border-bottom:1px dashed #E0D5BB;line-height:1.6">★ ' + m + '</div>';
+  }).join("");
+  return '<div class="card">' +
+    '<h3>★ 관상 분석 — ' + p.name + ' 전용</h3>' +
+    '<div style="font-size:11px;color:var(--muted);margin-bottom:12px;font-style:italic">셀카 + 사주 데이터 통합 분석 · 사진은 폰에서만 처리됩니다</div>' +
+    '<div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:14px">' +
+      '<img src="' + p.photo + '" style="width:100px;height:130px;object-fit:cover;border-radius:8px;border:2px solid var(--gold);flex-shrink:0">' +
+      '<div style="flex:1">' +
+        '<div style="font-size:10px;color:var(--terra);letter-spacing:2px;font-weight:700">관상 종합 점수</div>' +
+        '<div style="font-family:Georgia,serif;font-size:42px;font-weight:700;color:var(--purple);line-height:1">' + g.score + '<span style="font-size:18px;color:var(--muted)">/100</span></div>' +
+        '<div style="font-size:10px;color:var(--terra);letter-spacing:2px;font-weight:700;margin-top:8px">사주-관상 일치도</div>' +
+        '<div style="font-family:Georgia,serif;font-size:24px;font-weight:700;color:var(--gold);line-height:1.1">' + g.sajuMatch + '%</div>' +
+        '<div style="font-size:10px;color:var(--muted);margin-top:4px;font-style:italic">사주가 얼굴에도 새겨져 있습니다</div>' +
+      '</div>' +
+    '</div>' +
+    '<div style="font-size:10px;color:var(--terra);letter-spacing:2px;font-weight:700;margin:14px 0 6px">12궁 부위별 점수</div>' +
+    palacesHtml +
+    '<div style="font-size:10px;color:var(--terra);letter-spacing:2px;font-weight:700;margin:14px 0 6px">★ 핵심 메시지</div>' +
+    msgsHtml +
+    '<div style="font-size:10px;color:var(--muted);margin-top:10px;font-style:italic;text-align:center">Phase 1 출시 시 MediaPipe AI로 실제 얼굴 랜드마크 자동 측정 예정</div>' +
+  '</div>';
+}
+
+function renderReport(personKey, p, s, a, b, today){
+  const interp = interpretSaju(s);
+  const df = dailyFortune(s, today);
+  const narrParas = narrate(s, interp);
+
+  const pillarsHtml = [
+    {label:"年", pillar:s.year},
+    {label:"月", pillar:s.month},
+    {label:"日", pillar:s.day},
+    {label:"時", pillar:s.hour},
+  ].map(fmtPillar).join("");
+
+  const dist = interp.distribution;
+  const distTotal = Object.values(dist).reduce((a,v)=>a+v,0) || 1;
+  const elemRows = ["목","화","토","금","수"].map(e=>{
+    const v = dist[e], pct = v/distTotal*100;
+    let tag = "";
+    if(v<0.5) tag = `<span class="elem-tag tag-deficient">결핍</span>`;
+    else if(v>=4) tag = `<span class="elem-tag tag-excess">과잉</span>`;
+    return `<div class="elem-row">
+      <div class="elem-name">${e}</div>
+      <div class="elem-bar-bg"><div class="elem-bar elem-${e}" style="width:${pct}%"></div></div>
+      <div class="elem-val">${v.toFixed(1)} · ${pct.toFixed(0)}%</div>
+      ${tag}
+    </div>`;
+  }).join("");
+
+  const luckyHtml = `
+    <div class="lucky-grid">
+      <div class="lucky-item"><div class="label">색상</div><div class="value">${interp.lucky.colors.slice(0,3).join(" · ")}</div></div>
+      <div class="lucky-item"><div class="label">방향</div><div class="value">${interp.lucky.dir}</div></div>
+      <div class="lucky-item"><div class="label">숫자</div><div class="lucky-numbers">${interp.lucky.nums.map(n=>`<span>${n}</span>`).join("")}</div></div>
+      <div class="lucky-item"><div class="label">요일</div><div class="value">${interp.lucky.day}</div></div>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--muted)">보조 용신 ${interp.secondary} → ${interp.lucky2.colors[0]}, ${interp.lucky2.dir}, 숫자 ${interp.lucky2.nums[0]}</div>
+  `;
+
+  const astroRows = [
+    {glyph:"☉", name:"태양 · 자아", data:a.sun},
+    {glyph:"☽", name:"달 · 감정", data:a.moon},
+    {glyph:"AC", name:"상승궁 · 외양", data:a.asc},
+  ].map(r=>`<div class="astro-row">
+    <div class="astro-glyph">${r.glyph}</div>
+    <div class="astro-info"><div class="name">${r.name}</div><div class="sign">${r.data.sign} <span style="color:var(--muted);font-size:11px">${SIGN_ELEM[r.data.idx]} 원소</span></div></div>
+    <div class="astro-deg">${r.data.deg.toFixed(1)}°</div>
+  </div>`).join("");
+
+  const todayNotes = df.notes.length
+    ? df.notes.map(n=>`<div class="today-note">${n}</div>`).join("")
+    : `<div class="today-note">본명과의 강한 작용 없음 — 평이한 하루</div>`;
+
+  const narrHtml = narrParas.map(([t,b])=>`<div class="narrative-block"><h4>${t}</h4><p>${b}</p></div>`).join("");
+
+  const html = `
+    <div class="section-tag">${personKey==="p1"?"본인 리포트":"상대 리포트"}</div>
+    <div class="section-title">${p.name}</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:14px;padding:0 4px">${p.birth} ${p.time} · ${p.gender==="M"?"남":"여"} · ${p.place||""}</div>
+
+    <div class="card">
+      <h3>당신의 사주 — 4가지 기둥</h3>
+      <div class="pillars">${pillarsHtml}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:8px;font-style:italic">태어난 해·달·날·시각이 만든 4개의 운명 기둥</div>
+    </div>
+
+    <div class="essence">
+      <span class="ilgan-tag">당신의 본질</span>
+      <div class="symbol">${interp.ilganSym}</div>
+      <div class="traits">${interp.ilganTraits}</div>
+      <div style="margin-top:10px;font-size:12px;color:var(--gold-lt)">태어난 날의 분위기 · ${interp.iljiMood}</div>
+    </div>
+
+    <div class="card">
+      <h3>나는 어떤 사람인가 — 풀어쓴 해석</h3>
+      ${narrHtml}
+    </div>
+
+    <div class="card">
+      <h3>5가지 자연 기운의 균형</h3>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-style:italic">나무·불·흙·금·물 — 명리학의 5원소가 당신 안에 어떻게 분포하는가</div>
+      ${elemRows}
+      <div style="margin-top:14px">
+        <div class="kv-row"><span class="k">에너지 강도</span><span class="v gold">${interp.strength}</span></div>
+        <div class="kv-row"><span class="k">자기 추진력 vs 외부 의존</span><span class="v">${interp.me} vs ${interp.out}</span></div>
+        <div class="kv-row"><span class="k">타고난 성향 유형</span><span class="v">${interp.gyeokguk}</span></div>
+        <div class="kv-row"><span class="k">가장 필요한 보완 기운</span><span class="v gold">${interp.yongshin} (${interp.lucky.season})</span></div>
+        <div class="kv-row"><span class="k">두번째 보완 기운</span><span class="v">${interp.secondary}</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>★ 행운 가이드 — '${p.name}' 전용</h3>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;font-style:italic">당신에게 부족한 기운을 보충해주는 색·방향·숫자</div>
+      ${luckyHtml}
+    </div>
+
+    <div class="card">
+      <h3>서양 점성술 — 당신의 3가지 면</h3>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;font-style:italic">자아(태양) · 감정(달) · 외양(상승궁)</div>
+      ${astroRows}
+    </div>
+
+    <div class="card card-dark">
+      <h3>오늘의 운세 · ${today}</h3>
+      <div class="today-score">
+        <span class="num">${df.score}</span><span class="of">/100</span>
+        <div><span class="grade">${gradeKor(df.score)}</span></div>
+        <div style="font-size:11px;color:var(--gold-lt);margin-top:8px">오늘의 기운 · ${GAN_HJ[df.ts]}${JI_HJ[df.tb]}</div>
+      </div>
+      <div class="today-notes">${todayNotes}</div>
+    </div>
+
+    ${p.photo ? renderGwansang(s, p) : ""}
+
+    <div class="card">
+      <h3>오늘의 바이오리듬 · 태어난지 ${b.days.toLocaleString()}일째</h3>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;font-style:italic">신체(23일)·감정(28일)·지성(33일) 주기로 변하는 컨디션</div>
+      <canvas class="bio-chart-canvas" id="bio-${personKey}" width="800" height="320"></canvas>
+      <div class="bio-legend">
+        <span><i style="background:#C95845"></i>신체 23일</span>
+        <span><i style="background:#3E7B7A"></i>감정 28일</span>
+        <span><i style="background:#5D4782"></i>지성 33일</span>
+      </div>
+      <div class="bio-today-vals">
+        <div class="bio-val"><div class="lab">신체</div><div class="num ${b.p>=0?"pos":"neg"}">${b.p>0?"+":""}${b.p}</div></div>
+        <div class="bio-val"><div class="lab">감정</div><div class="num ${b.e>=0?"pos":"neg"}">${b.e>0?"+":""}${b.e}</div></div>
+        <div class="bio-val"><div class="lab">지성</div><div class="num ${b.i>=0?"pos":"neg"}">${b.i>0?"+":""}${b.i}</div></div>
+      </div>
+    </div>
+  `;
+  return html;
+}
+
+function drawBioChart(canvasId, birthDate, today){
+  const c = document.getElementById(canvasId);
+  if(!c) return;
+  const ctx = c.getContext("2d");
+  const W = c.width, H = c.height;
+  ctx.clearRect(0,0,W,H);
+  // background grid
+  ctx.fillStyle = "#F2EBD8"; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle = "rgba(122,110,126,0.2)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, H/2); ctx.lineTo(W, H/2); ctx.stroke();
+  // 14 days range, 7 before today, 7 after
+  const [by,bm,bd] = birthDate.split("-").map(Number);
+  const [ty,tm,td] = today.split("-").map(Number);
+  const todayDays = jdn(ty,tm,td) - jdn(by,bm,bd);
+  const days = 14;
+  const offsets = [];
+  for(let i=-7;i<=7;i++) offsets.push(i);
+  function valX(idx){return idx/days * W;}
+  function valY(v){return H/2 - v * H * 0.4;}
+  // physical
+  function drawCurve(period, color, lw){
+    ctx.beginPath();
+    ctx.strokeStyle = color; ctx.lineWidth = lw;
+    for(let i=0;i<=days*4;i++){
+      const off = -7 + i/4;
+      const v = Math.sin(2*Math.PI*(todayDays+off)/period);
+      const x = valX(i/4);
+      const y = valY(v);
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+  }
+  drawCurve(23, "#C95845", 3);
+  drawCurve(28, "#3E7B7A", 3);
+  drawCurve(33, "#5D4782", 3);
+  // today vertical line
+  ctx.strokeStyle = "rgba(212,164,68,0.6)";
+  ctx.lineWidth = 2; ctx.setLineDash([4,4]);
+  ctx.beginPath();
+  ctx.moveTo(valX(7), 0); ctx.lineTo(valX(7), H);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  // labels
+  ctx.fillStyle = "#7A6E7E"; ctx.font = "11px sans-serif";
+  ctx.fillText("-7d", 4, H-6);
+  ctx.fillText("오늘", valX(7)-12, 14);
+  ctx.fillText("+7d", W-30, H-6);
+  ctx.fillStyle = "#7A6E7E"; ctx.font = "10px sans-serif";
+  ctx.fillText("+100", 4, 14);
+  ctx.fillText("0", 4, H/2-2);
+  ctx.fillText("-100", 4, H-12);
+}
+
+function renderCompat(){
+  const s1 = computeSaju(state.p1), s2 = computeSaju(state.p2);
+  const a1 = computeAstro(state.p1), a2 = computeAstro(state.p2);
+  const today = todayStr();
+  const b1 = biorhythm(state.p1.birth, today), b2 = biorhythm(state.p2.birth, today);
+  const sj = sajuCompat(s1, s2, state.p1.gender, state.p2.gender);
+  const as = astroCompat(a1, a2);
+  const bc = biorhythmCompat(b1, b2);
+  const bioScore = Math.max(0, Math.min(100, 50 + bc.total*0.4));
+  const structural = Math.round((sj.score*0.6 + as.score*0.4)*10)/10;
+  const todayScore = Math.round((structural*0.7 + bioScore*0.3)*10)/10;
+
+  function bdHtml(bd){
+    return bd.map(([cat,d,note])=>{
+      const cls = d>0 ? "pos" : (d<0 ? "neg" : "zero");
+      const sign = d>0 ? "+" : "";
+      return `<div class="bd-row">
+        <div class="bd-delta ${cls}">${d===0?"·":sign+d}</div>
+        <div><div class="bd-tag">${cat}</div><div class="bd-note">${note}</div></div>
+      </div>`;
+    }).join("");
+  }
+
+  const html = `
+    <div class="section-tag">두 사람의 궁합</div>
+    <div class="section-title">${state.p1.name} × ${state.p2.name}</div>
+
+    <div class="compat-pair">
+      <div class="name">${state.p1.name}<br><span style="font-size:10px;color:var(--muted);font-weight:normal">${s1.day.stem}${s1.day.branch} (${interpretSaju(s1).element})</span></div>
+      <div class="vs">×</div>
+      <div class="name">${state.p2.name}<br><span style="font-size:10px;color:var(--muted);font-weight:normal">${s2.day.stem}${s2.day.branch} (${interpretSaju(s2).element})</span></div>
+    </div>
+
+    <div class="compat-hero">
+      <div class="label">종합 궁합 · 본질</div>
+      <div><span class="score">${structural}</span><span class="of100">/100</span></div>
+      <div class="grade-tag">${gradeKor(structural)}</div>
+      <div style="margin-top:14px;font-size:11px;color:var(--gold-lt)">사주 60% + 점성술 40%</div>
+    </div>
+
+    <div class="card">
+      <h3>오늘의 궁합 · ${today}</h3>
+      <div class="today-score">
+        <span class="num">${todayScore}</span><span class="of">/100</span>
+        <div><span class="grade">${gradeKor(todayScore)}</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px">본질 70% + 바이오리듬 동기율 30%</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>사주 궁합 · ${sj.score}/100</h3>
+      <div class="bd-list">${bdHtml(sj.bd)}</div>
+    </div>
+
+    <div class="card">
+      <h3>점성술 궁합 · ${as.score}/100</h3>
+      <div class="bd-list">${bdHtml(as.bd)}</div>
+    </div>
+
+    <div class="card">
+      <h3>오늘의 바이오리듬 동기율 · ${Math.round(bioScore)}/100</h3>
+      <div class="bio-today-vals">
+        <div class="bio-val"><div class="lab">신체</div><div class="num ${bc.p>=0?"pos":"neg"}">${bc.p>0?"+":""}${bc.p}</div></div>
+        <div class="bio-val"><div class="lab">감정</div><div class="num ${bc.e>=0?"pos":"neg"}">${bc.e>0?"+":""}${bc.e}</div></div>
+        <div class="bio-val"><div class="lab">지성</div><div class="num ${bc.i>=0?"pos":"neg"}">${bc.i>0?"+":""}${bc.i}</div></div>
+      </div>
+      <div style="margin-top:10px;text-align:center;font-size:12px;color:var(--muted)">평균 동기율 ${bc.total>0?"+":""}${bc.total}</div>
+    </div>
+  `;
+  document.getElementById("compat-view").innerHTML = applyI18N(html, currentLang);
+}
+
+// ============================================================================
+// 9a. i18n (한·태 토글)
+// ============================================================================
+const I18N_TH = {
+  // UI labels
+  "본인 정보 입력":"กรอกข้อมูลของคุณ",
+  "상대 정보":"ข้อมูลคู่หมาย",
+  "당신의 운명·운세·궁합을 한 곳에서":"ชะตา · ดวง · คู่ครอง ในที่เดียว",
+  "상대 정보 입력":"กรอกข้อมูลคู่หมาย",
+  "두 사람의 궁합을 분석합니다":"วิเคราะห์ความเข้ากันของสองคน",
+  "분석 시작 →":"เริ่มวิเคราะห์ →",
+  "상대 분석 →":"วิเคราะห์คู่หมาย →",
+  "여친(상대) 정보 입력 →":"กรอกข้อมูลคู่หมาย →",
+  "★ 두 사람 궁합 보기 →":"★ ดูความเข้ากัน →",
+  "← 다시 입력":"← กลับไปแก้ไข",
+  "← 본인 리포트로":"← กลับสู่รายงาน",
+  "← 본인 리포트":"← รายงานของคุณ",
+  "처음으로":"กลับสู่หน้าแรก",
+  // Form fields
+  "호칭/이름":"ชื่อ",
+  "성별":"เพศ",
+  "남":"ชาย",
+  "여":"หญิง",
+  "생년월일 (양력)":"วันเกิด (สุริยคติ)",
+  "출생 시각":"เวลาเกิด",
+  "출생지":"สถานที่เกิด",
+  "위도":"ละติจูด",
+  "경도":"ลองจิจูด",
+  // Section titles
+  "본인 리포트":"รายงานของคุณ",
+  "상대 리포트":"รายงานคู่หมาย",
+  "두 사람의 궁합":"ความเข้ากันของสองคน",
+  "명조 — 사주 4기둥":"ดวงชาตา — สี่เสาหลัก",
+  "풀어쓴 명조":"คำอธิบายดวงชาตา",
+  "5행 분포 (지장간 가중)":"การกระจายธาตุทั้ง 5",
+  "★ 행운 정보":"★ ของนำโชค",
+  "서양 점성술 빅3":"โหราศาสตร์ Big 3",
+  "오늘의 운세":"ดวงประจำวัน",
+  "오늘 바이오리듬":"ไบโอริทึมวันนี้",
+  "오늘의 궁합":"ความเข้ากันวันนี้",
+  "사주 궁합":"ความเข้ากันดวงชาตา",
+  "점성술 궁합":"ความเข้ากันโหราศาสตร์",
+  "오늘의 바이오리듬 동기율":"การประสานไบโอริทึมวันนี้",
+  "종합 궁합 · 본질":"ความเข้ากันโดยรวม",
+  // Narrative section titles
+  "한 줄 본질":"แก่นแท้ในประโยคเดียว",
+  "성격":"นิสัย",
+  "필요한 기운":"พลังงานที่ต้องการ",
+  "관계에서의 모습":"ในความสัมพันธ์",
+  "실천 권장":"คำแนะนำในชีวิตประจำวัน",
+  // Lucky labels
+  "색상":"สี",
+  "방향":"ทิศ",
+  "숫자":"ตัวเลข",
+  "요일":"วันประจำสัปดาห์",
+  // KV row labels
+  "일간 강도":"ความแข็งของอิลกัน",
+  "자생력 vs 소모":"พลังเอง vs สลาย",
+  "격국 (약식)":"กยอกกุก (ย่อ)",
+  "희신 1순위":"ฮีชิน อันดับ 1",
+  "희신 2순위":"ฮีชิน อันดับ 2",
+  // Astro
+  "태양 · 자아":"ดวงอาทิตย์ · ตัวตน",
+  "달 · 감정":"ดวงจันทร์ · อารมณ์",
+  "상승궁 · 외양":"แอสเซนแดนต์ · ภายนอก",
+  // Element names
+  "목":"ไม้","화":"ไฟ","토":"ดิน","금":"โลหะ","수":"น้ำ",
+  // Body / season
+  "동쪽":"ทิศตะวันออก","서쪽":"ทิศตะวันตก","남쪽":"ทิศใต้","북쪽":"ทิศเหนือ","중앙":"ตรงกลาง",
+  "봄":"ฤดูใบไม้ผลิ","여름":"ฤดูร้อน","가을":"ฤดูใบไม้ร่วง","겨울":"ฤดูหนาว","환절기":"ช่วงเปลี่ยนฤดู",
+  "녹색":"สีเขียว","청록":"สีเขียวอมฟ้า","에메랄드":"สีมรกต","빨강":"สีแดง","핑크":"สีชมพู",
+  "자홍":"สีบานเย็น","주황":"สีส้ม","노랑":"สีเหลือง","갈색":"สีน้ำตาล","베이지":"สีเบจ",
+  "황토":"สีดินเหลือง","흰색":"สีขาว","은색":"สีเงิน","금색":"สีทอง","검정":"สีดำ",
+  "남색":"สีกรมท่า","짙은 파랑":"สีน้ำเงินเข้ม",
+  // Weekdays
+  "목요일":"วันพฤหัสบดี","화요일":"วันอังคาร","토요일":"วันเสาร์","금요일":"วันศุกร์","수요일":"วันพุธ",
+  // Grades
+  "매우 길":"ดีมาก","길":"ดี","보통 이상":"ดีพอควร","보통":"ปกติ","주의":"ระวัง","흉":"ไม่ดี",
+  // Strength
+  "신강":"แข็ง","신약":"อ่อน","중화":"สมดุล",
+  // Misc
+  "사주 60% + 점성술 40%":"ดวงชาตา 60% + โหราศาสตร์ 40%",
+  "본질 70% + 바이오리듬 동기율 30%":"แก่น 70% + ไบโอริทึม 30%",
+  "신체":"ร่างกาย","감정":"อารมณ์","지성":"สติปัญญา",
+  "보조 용신":"ฮีชินสำรอง",
+  "결과 카드 공유":"แชร์ผลลัพธ์",
+  "이미지 다운로드":"ดาวน์โหลด",
+  "기타 앱으로 공유":"แชร์ผ่านแอปอื่น",
+  "닫기":"ปิด",
+  "오늘 일진":"ดวงประจำวันนี้",
+  "결핍":"ขาด","과잉":"เกิน",
+  "본인":"คุณ","여친":"คู่หมาย","상대":"คู่หมาย",
+  "본질 궁합":"ความเข้ากันโดยรวม",
+  "사주 4기둥":"สี่เสาหลัก",
+  "사주":"ดวงชาตา",
+  "ส บ า ย · 사 바 이":"ส บ า ย · 사 바 이",
+  "PROTOTYPE v1":"PROTOTYPE v1",
+  "본 프로토타입은 알고리즘 시연용이며, 실제 운세는 참고용으로만 사용해주세요.":"ต้นแบบนี้สำหรับการสาธิตอัลกอริทึม โปรดใช้เป็นข้อมูลอ้างอิงเท่านั้น",
+  "SABAI":"SABAI",
+  // ── 격국(格局)
+  "비견·겁재격 (자기중심·독립형)":"เกียกกุก: ตัวเอง · อิสระ",
+  "식신·상관격 (표현·창의형)":"เกียกกุก: แสดงออก · สร้างสรรค์",
+  "정인·편인격 (학자·내면형)":"เกียกกุก: นักวิชาการ · ภายใน",
+  "정재·편재격 (실리·재물형)":"เกียกกุก: เงินทอง · ปฏิบัตินิยม",
+  "정관·편관격 (조직·명예형)":"เกียกกุก: องค์กร · เกียรติ",
+  "혼합격":"เกียกกุกผสม",
+  // ── 사주 궁합 breakdown 라벨
+  "baseline":"ฐาน",
+  "중립 기준점":"จุดเริ่มกลาง",
+  "일간 천간합":"อิลกันรวมเทียนกาน",
+  "일간 천간충":"อิลกันชนกัน",
+  "일지 육합":"อิลจิรวมหก",
+  "일지 충":"อิลจิชนกัน",
+  "일지 반합":"อิลจิรวมครึ่ง",
+  "연지 합":"ยอนจิรวม",
+  "연지 충":"ยอนจิชนกัน",
+  "연지 반합":"ยอนจิรวมครึ่ง",
+  "월지 합":"วอลจิรวม",
+  "월지 충":"วอลจิชนกัน",
+  "월지 반합":"วอลจิรวมครึ่ง",
+  "시지 합":"ชีจิรวม",
+  "시지 충":"ชีจิชนกัน",
+  "시지 반합":"ชีจิรวมครึ่ง",
+  "일간 상생":"อิลกันสร้างกัน",
+  "일간 상극":"อิลกันข่มกัน",
+  "일간 동일":"อิลกันเหมือน",
+  "★용신 직접 공급":"★ส่งฮีชินตรง",
+  "용신 간접 공급":"ส่งฮีชินทางอ้อม",
+  "용신 보충":"เติมฮีชิน",
+  "★용신 보충 합산":"★ผลรวมเติมฮีชิน",
+  "본인→여친 십성":"คุณ→คู่ครอง ซิบซอง",
+  "여친→본인 십성":"คู่ครอง→คุณ ซิบซอง",
+  "다중 합 누적":"รวมหลายชั้นสะสม",
+  "본질적 끌림":"ดึงดูดที่แก่น",
+  "결정적 보완":"เติมเต็มชี้ขาด",
+  "정서적 안정":"ความมั่นคงทางอารมณ์",
+  "일상적 마찰":"ความขัดแย้งประจำวัน",
+  "가치관 충돌":"ค่านิยมขัดแย้ง",
+  "사회적 시너지":"เสริมพลังทางสังคม",
+  "일방향 에너지 공급":"พลังงานทางเดียว",
+  "양방향 결핍 보충 누적":"เติมเต็มสองทางสะสม",
+  "연인 길조":"นิมิตดีแห่งคู่รัก",
+  "본인 일간이 여친의":"อิลกันคุณเป็น ___ ของคู่ครอง",
+  "여친 일간이 본인의":"อิลกันคู่ครองเป็น ___ ของคุณ",
+  "기둥 합 동시 발생":"เสารวมพร้อมกัน",
+  "기둥 합":"เสารวม",
+  "본인 명조에 여친 용신":"ในดวงคุณมีฮีชินคู่ครอง",
+  "여친 명조에 본인 용신":"ในดวงคู่ครองมีฮีชินคุณ",
+  "천간 보유":"มีเทียนกาน",
+  "양방향 결핍 보충 누적 +":"เติมเต็มสองทาง +",
+  // ── 십성 이름
+  "식신":"ซิกชิน","상관":"ซังกวัน","편재":"พยอนแจ","정재":"จองแจ",
+  "편관":"พยอนกวัน","정관":"จองกวัน","편인":"พยอนอิน","정인":"จองอิน",
+  "비견":"บีกยอน","겁재":"กอบแจ",
+  // ── 점성술 어스펙트
+  "태양↔태양":"อาทิตย์↔อาทิตย์","달↔달":"จันทร์↔จันทร์",
+  "태양1↔달2":"อาทิตย์1↔จันทร์2","달1↔태양2":"จันทร์1↔อาทิตย์2",
+  "ASC↔ASC":"ASC↔ASC",
+  "태양↔태양 약":"อาทิตย์↔อาทิตย์ อ่อน",
+  "달↔달 약":"จันทร์↔จันทร์ อ่อน",
+  "태양1↔달2 약":"อาทิตย์1↔จันทร์2 อ่อน",
+  "달1↔태양2 약":"จันทร์1↔อาทิตย์2 อ่อน",
+  "ASC↔ASC 약":"ASC↔ASC อ่อน",
+  "태양 원소 동족":"อาทิตย์ธาตุเดียวกัน",
+  "달 원소 동족":"จันทร์ธาตุเดียวกัน",
+  "공기":"อากาศ",
+  "합":"รวม","섹스타일":"เซ็กไทล์","스퀘어":"สเควร์",
+  "트라인":"ทรายน์","오포지션":"ออปโพซิชัน",
+  // ── 별자리
+  "양자리":"ราศีเมษ","황소자리":"ราศีพฤษภ","쌍둥이자리":"ราศีเมถุน","게자리":"ราศีกรกฎ",
+  "사자자리":"ราศีสิงห์","처녀자리":"ราศีกันย์","천칭자리":"ราศีตุล","전갈자리":"ราศีพิจิก",
+  "사수자리":"ราศีธนู","염소자리":"ราศีมังกร","물병자리":"ราศีกุมภ์","물고기자리":"ราศีมีน",
+  "원소":"ธาตุ",
+  // ── 일주 본질 (10천간 일간 상징)
+  "거대한 나무·곧은 큰 줄기":"ต้นไม้ใหญ่ ลำต้นตรง",
+  "덩굴·꽃·여린 풀":"เถาวัลย์ ดอกไม้ หญ้าอ่อน",
+  "태양·큰 불":"ดวงอาทิตย์ ไฟใหญ่",
+  "촛불·등잔불":"เทียน ตะเกียง",
+  "산·큰 흙":"ภูเขา ดินใหญ่",
+  "정원의 흙·논밭":"ดินสวน นาไร่",
+  "강철·큰 칼":"เหล็กกล้า ดาบใหญ่",
+  "보석·세공된 금속":"อัญมณี โลหะเจียระไน",
+  "강·큰 바다":"แม่น้ำ ทะเลใหญ่",
+  "이슬·시냇물":"น้ำค้าง ลำธาร",
+  // 일간 traits (10)
+  "독립적·진취적·곧은 의지·리더십·완고함":"อิสระ · กระตือรือร้น · มุ่งมั่น · ผู้นำ · ดื้อดึง",
+  "유연·사회성·친화·표현력·우유부단":"ยืดหยุ่น · สังคม · เป็นมิตร · แสดงออก · ลังเล",
+  "열정·낙관·솔직·따뜻함·다혈질":"ร้อนแรง · มองโลกในแง่ดี · ตรงไปตรงมา · อบอุ่น · เลือดร้อน",
+  "섬세·헌신·예의·내면 강함·예민":"ละเอียดอ่อน · อุทิศตน · มีมารยาท · เข้มแข็งภายใน · ละเอียดอ่อน",
+  "신중·믿음직·뚝심·보수·고집":"รอบคอบ · น่าเชื่อถือ · มั่นคง · อนุรักษ์ · ดื้อ",
+  "포용력·실용·세심·소심":"โอบอ้อมอารี · ปฏิบัตินิยม · รอบคอบ · ขี้อาย",
+  "결단·정의감·의리·강직·냉정":"เด็ดขาด · ยุติธรรม · มีคุณธรรม · ตรงไปตรงมา · เยือกเย็น",
+  "예민·완벽주의·심미안·예술성·까칠함":"ละเอียด · สมบูรณ์แบบ · สายตาทางสุนทรียะ · ศิลปะ · จู้จี้",
+  "지혜·포용·통찰·깊이·변덕":"ปัญญา · โอบอ้อม · หยั่งรู้ · ลึกซึ้ง · เปลี่ยนแปลง",
+  "맑음·총명·순수·예술감·예민·우유부단":"ใส · ฉลาด · บริสุทธิ์ · ศิลปะ · ละเอียด · ลังเล",
+  // 일지 분위기
+  "한밤의 물기 — 깊은 사색·비밀·지혜":"ความชื้นยามดึก — ครุ่นคิดลึก · ความลับ · ปัญญา",
+  "겨울 끝 흙 — 인내·누적·끈기":"ดินปลายหนาว — อดทน · สะสม · พากเพียร",
+  "이른 봄의 시작 — 도전·개척·직진":"ต้นใบไม้ผลิ — ท้าทาย · บุกเบิก · มุ่งหน้า",
+  "활짝 핀 봄 — 사교·표현·예술":"ฤดูใบไม้ผลิที่บานเต็มที่ — สังคม · แสดงออก · ศิลปะ",
+  "늦봄 흙 — 변화 적응·수용·다재다능":"ดินปลายใบไม้ผลิ — ปรับตัว · ยอมรับ · หลากหลาย",
+  "초여름 불 — 활발·추진력·직관":"ไฟต้นร้อน — กระฉับกระเฉง · ผลักดัน · สัญชาตญาณ",
+  "한여름 절정 — 화려함·인기·외향":"กลางร้อน — หรูหรา · ได้รับความนิยม · เปิดเผย",
+  "늦여름 휴식 — 신중·보살핌·안정 추구":"ปลายร้อนพัก — รอบคอบ · ดูแล · แสวงความมั่นคง",
+  "초가을 결실 — 리더·야망·추진":"ต้นใบไม้ร่วง — ผู้นำ · ความทะเยอทะยาน · ผลักดัน",
+  "한가을 수확 — 세련·미적 감각·분석":"กลางใบไม้ร่วง — สง่างาม · สุนทรียะ · วิเคราะห์",
+  "늦가을 흙 — 침착·묵직함·신뢰":"ดินปลายใบไม้ร่วง — สงบ · หนักแน่น · ไว้ใจได้",
+  "초겨울 물 — 깊은 정·헌신·직관":"น้ำต้นหนาว — รักลึก · อุทิศตน · สัญชาตญาณ",
+  // ── narrative 키워드
+  "에 자란":"เติบโตใน",
+  "하면서도":"ในขณะที่",
+  "한 사람":"คนหนึ่ง",
+  "일간":"อิลกัน",
+  "로 태어나, 본질은":"เกิด, แก่นแท้คือ",
+  "성향이 두드러집니다":"นิสัยโดดเด่น",
+  "명조 전반에":"ทั่วดวงชาตา",
+  "이 가장 풍부하여":"มากที่สุด ทำให้",
+  "스스로 자립할 힘이 충분":"มีพลังพึ่งตนเองพอ",
+  "주변의 지원이 있을 때 빛을 발함":"เปล่งประกายเมื่อได้รับการสนับสนุน",
+  "균형 잡힌 자질":"คุณสมบัติสมดุล",
+  "하다는 뜻입니다":"หมายความว่า",
+  "특히":"โดยเฉพาะ",
+  "이 일간을 끊임없이 키워주는 구조라, 사색·내면이 깊어지는 방향으로 성장합니다":"เลี้ยงอิลกันต่อเนื่อง — เติบโตทางครุ่นคิดและภายใน",
+  "다만":"อย่างไรก็ตาม",
+  "이 일간 에너지를 빼가는 자리라, 자신을 표현·소진하는 일이 잦습니다":"ดึงพลังอิลกันออก — มักแสดงออกและใช้พลัง",
+  "반면":"ในทางตรงข้าม",
+  "기운이 거의 없거나 매우 약합니다":"พลังงานแทบไม่มีหรืออ่อนมาก",
+  "이를 보완하는 것이 인생의 질을 좌우합니다":"การเติมเต็มนี้กำหนดคุณภาพชีวิต",
+  "가장 필요한 보완 오행":"ธาตุที่ต้องเติมเต็มที่สุด",
+  "보조":"สำรอง",
+  "5행이 비교적 고르게 분포":"ธาตุทั้ง 5 กระจายค่อนข้างสม่ำเสมอ",
+  "1순위 용신은":"ฮีชินอันดับ 1 คือ",
+  "기운이 거의 없거나 매우 약합니다":"พลังงานแทบไม่มีหรืออ่อนมาก",
+  "본명과의 강한 작용 없음 - 평이한 하루":"ไม่มีผลรุนแรงกับดวงชาตา — วันธรรมดา",
+  "본명과의 강한 작용 없음 — 평이한 하루":"ไม่มีผลรุนแรงกับดวงชาตา — วันธรรมดา",
+  "오늘 천간":"เทียนกานวันนี้",
+  "오늘 일지":"อิลจิวันนี้",
+  "본명 일지":"อิลจิดวงชาตา",
+  "본명 일간":"อิลกันดวงชาตา",
+  "호의·인연 유리":"เป็นมิตร · ความสัมพันธ์ดี",
+  "자기 주장 자제":"ระงับการโต้แย้ง",
+  "정서적으로 평온":"สงบทางอารมณ์",
+  "변동 조심, 큰 결정 미루기":"ระวังการเปลี่ยนแปลง · เลื่อนการตัดสินใจ",
+  "사회적 시너지":"เสริมพลังสังคม",
+  "컨디션 좋음":"สภาพดี",
+  "길일 ★":"วันมงคล ★",
+  "오늘 기운":"พลังวันนี้",
+  "이 본인을 극함 — 무리 금물":"ข่มคุณ — อย่าฝืน",
+  "본인이 오늘 기운에 베푸는 날 — 도움 청해도 좋음":"คุณให้พลังกับวันนี้ — ขอความช่วยเหลือได้",
+  "을 도움 — 컨디션 좋음":"ช่วยเหลือ — สภาพดี",
+  "오늘 천간 오행이 본인 용신":"ธาตุเทียนกานวันนี้คือฮีชินคุณ",
+  "운세 점수":"คะแนนดวง",
+  "생후":"อายุ",
+  "(여름 기운)":"(พลังร้อน)",
+  "(봄 기운)":"(พลังใบไม้ผลิ)",
+  "(가을 기운)":"(พลังใบไม้ร่วง)",
+  "(겨울 기운)":"(พลังหนาว)",
+  "(환절기 기운)":"(พลังเปลี่ยนฤดู)",
+  "기운":"พลังงาน",
+  "용신":"ฮีชิน",
+  "평균 동기율":"การประสานเฉลี่ย",
+  "두 사람 데이터가 필요합니다":"ต้องการข้อมูลของทั้งสองคน",
+  "필수 항목을 입력해주세요":"กรุณากรอกข้อมูลที่จำเป็น",
+  "이 브라우저에서는 공유가 지원되지 않습니다":"เบราว์เซอร์นี้ไม่รองรับการแชร์",
+  "본질":"แก่นแท้",
+  "공기":"อากาศ",
+  "원소":"ธาตุ",
+  "지장간":"จังกัน",
+  // ── 시간대 / 위치 (일상어)
+  "한국 / 일본":"เกาหลี / ญี่ปุ่น",
+  "중국 / 홍콩 / 대만 / 싱가포르 / 필리핀 / 말레이시아":"จีน / ฮ่องกง / ไต้หวัน / สิงคโปร์ / ฟิลิปปินส์ / มาเลเซีย",
+  "태국 / 베트남 / 인도네시아 / 캄보디아":"ไทย / เวียดนาม / อินโดนีเซีย / กัมพูชา",
+  "인도":"อินเดีย",
+  "호주 (시드니·멜버른)":"ออสเตรเลีย (ซิดนีย์·เมลเบิร์น)",
+  "유럽 중부 (독일·프랑스·이탈리아)":"ยุโรปกลาง (เยอรมนี·ฝรั่งเศส·อิตาลี)",
+  "영국 / 포르투갈":"อังกฤษ / โปรตุเกส",
+  "미국 동부 (뉴욕)":"สหรัฐฯ ฝั่งตะวันออก (นิวยอร์ก)",
+  "미국 서부 (LA·샌프란시스코)":"สหรัฐฯ ฝั่งตะวันตก (LA·ซานฟรานซิสโก)",
+  "기타 (모를 때)":"อื่นๆ (ไม่ทราบ)",
+  "고급 설정 — 정확한 위치 (선택)":"การตั้งค่าขั้นสูง — พิกัดแม่นยำ (เลือกได้)",
+  "진태양시 보정용 — 모르면 그대로 두세요":"สำหรับปรับเวลาสุริยะจริง — ไม่รู้ก็ปล่อยไว้",
+  "★ 출생지의 위도·경도를 입력하세요":"★ ใส่ละติจูด-ลองจิจูดของสถานที่เกิด",
+  "사주 시주(時柱) 계산을 진태양시 기준으로 더 정확히 보정합니다. 출생 도시명을 Google에서 검색하면 위도·경도가 나옵니다. 모르면 그대로 두셔도 무방합니다.":"ปรับการคำนวณเสาเวลา (時柱) ของดวงชาตาตามเวลาสุริยะจริงให้แม่นยำขึ้น ค้นหาชื่อเมืองเกิดใน Google จะพบละติจูด-ลองจิจูด หากไม่ทราบสามารถปล่อยตามค่าเริ่มต้นได้",
+  "★ 관상 분석용 사진 (선택, 본인만)":"★ ภาพสำหรับวิเคราะห์ใบหน้า (เลือกได้, เฉพาะคุณ)",
+  "정면·측면 2장 모두 업로드 시 정확도 ↑ · 사진은 폰에서만 처리":"อัปโหลดทั้งหน้าตรงและด้านข้างเพิ่มความแม่นยำ · ประมวลผลในมือถือเท่านั้น",
+  "정면 사진":"ภาพหน้าตรง",
+  "측면 사진":"ภาพด้านข้าง",
+  "정면: 자연광·무표정·이마 노출 · 측면: 옆모습 90°":"หน้าตรง: แสงธรรมชาติ·ไม่ยิ้ม·เห็นหน้าผาก · ด้านข้าง: หันข้าง 90°",
+  // ── v3 일상어 라벨
+  "당신의 사주 — 4가지 기둥":"ดวงชาตาของคุณ — 4 เสาหลัก",
+  "태어난 해·달·날·시각이 만든 4개의 운명 기둥":"4 เสาที่เกิดจากปี เดือน วัน เวลาเกิด",
+  "당신의 본질":"แก่นแท้ของคุณ",
+  "태어난 날의 분위기 ·":"บรรยากาศวันเกิด ·",
+  "태어난 날의 분위기":"บรรยากาศวันเกิด",
+  "나는 어떤 사람인가 — 풀어쓴 해석":"ฉันคือใคร — คำอธิบายโดยละเอียด",
+  "5가지 자연 기운의 균형":"ความสมดุลพลังธรรมชาติ 5 อย่าง",
+  "나무·불·흙·금·물 — 명리학의 5원소가 당신 안에 어떻게 분포하는가":"ไม้ ไฟ ดิน โลหะ น้ำ — 5 ธาตุภายในตัวคุณ",
+  "에너지 강도":"ระดับพลังงาน",
+  "에너지 강함":"พลังงานแรง",
+  "에너지 약함":"พลังงานอ่อน",
+  "균형":"สมดุล",
+  "자기 추진력 vs 외부 의존":"พลังตัวเอง vs ต้องการการสนับสนุน",
+  "타고난 성향 유형":"แบบนิสัยติดตัว",
+  "가장 필요한 보완 기운":"พลังที่ต้องเติมเต็มที่สุด",
+  "두번째 보완 기운":"พลังเสริมที่สอง",
+  "★ 행운 가이드":"★ คู่มือนำโชค",
+  "당신에게 부족한 기운을 보충해주는 색·방향·숫자":"สี ทิศ ตัวเลข ที่เติมพลังที่คุณขาด",
+  "서양 점성술 — 당신의 3가지 면":"โหราศาสตร์ตะวันตก — 3 มุมของคุณ",
+  "자아(태양) · 감정(달) · 외양(상승궁)":"ตัวตน(อาทิตย์) · อารมณ์(จันทร์) · ภาพลักษณ์(แอสเซนแดนต์)",
+  "오늘의 기운":"พลังของวันนี้",
+  "오늘의 바이오리듬":"ไบโอริทึมวันนี้",
+  "태어난지":"อายุได้",
+  "일째":"วัน",
+  "신체(23일)·감정(28일)·지성(33일) 주기로 변하는 컨디션":"สภาพร่างกาย(23วัน) อารมณ์(28วัน) สติ(33วัน) ที่เปลี่ยนไปตามรอบ",
+  // ── 격국 (일상어)
+  "독립·자립형 — 자기 길을 가는 사람":"แบบอิสระ — คนที่เดินทางของตน",
+  "표현·창의형 — 자신을 펼치는 사람":"แบบแสดงออก สร้างสรรค์ — คนที่เผยตัวตน",
+  "학자·사색형 — 깊이 파고드는 사람":"แบบนักวิชาการ ใคร่ครวญ — คนที่ขุดลึก",
+  "실리·재물형 — 결과를 만드는 사람":"แบบปฏิบัตินิยม — คนสร้างผลลัพธ์",
+  "조직·명예형 — 책임감 있는 사람":"แบบองค์กร เกียรติ — คนรับผิดชอบ",
+  "복합형 — 여러 강점을 가진 사람":"แบบผสม — คนมีจุดแข็งหลายด้าน",
+  // ── narrative 섹션 (일상어)
+  "당신은 한 마디로":"คุณในประโยคเดียว",
+  "당신의 성격":"นิสัยของคุณ",
+  "당신에게 필요한 것":"สิ่งที่คุณต้องการ",
+  "연애·관계에서":"ในความรัก ความสัมพันธ์",
+  "오늘부터 실천":"เริ่มทำได้ตั้งแต่วันนี้",
+  // ── 사주 궁합 breakdown (일상어)
+  "기본 점수":"คะแนนเริ่มต้น",
+  "모든 사람의 시작점":"จุดเริ่มต้นของทุกคน",
+  "본질적 끌림":"ดึงดูดที่แก่นแท้",
+  "성격의 핵심이 자석처럼 끌어당김":"หัวใจนิสัยดึงดูดกันเหมือนแม่เหล็ก",
+  "가치관 차이":"ความแตกต่างค่านิยม",
+  "생각·가치관이 부딪힐 가능성":"ความคิดและค่านิยมอาจขัดแย้ง",
+  "감정 안정감":"ความมั่นคงทางอารมณ์",
+  "함께 있을 때 마음이 편안함":"อยู่ด้วยกันแล้วรู้สึกสบายใจ",
+  "일상 마찰":"ความขัดแย้งประจำวัน",
+  "사소한 일에서 충돌이 잦을 수 있음":"อาจขัดแย้งเรื่องเล็กน้อยบ่อย",
+  "함께 있으면 외부에서도 잘 풀림":"อยู่ด้วยกันแล้วเรื่องภายนอกราบรื่น",
+  "가족·환경 잘 맞음":"ครอบครัว สิ่งแวดล้อม เข้ากัน",
+  "가족·환경 차이":"ครอบครัว สิ่งแวดล้อม ต่างกัน",
+  "가족·환경 시너지":"ครอบครัว สิ่งแวดล้อม เสริมพลัง",
+  "일·커리어 잘 맞음":"งาน อาชีพ เข้ากัน",
+  "일·커리어 차이":"งาน อาชีพ ต่างกัน",
+  "일·커리어 시너지":"งาน อาชีพ เสริมพลัง",
+  "미래·자녀 잘 맞음":"อนาคต ลูก เข้ากัน",
+  "미래·자녀 차이":"อนาคต ลูก ต่างกัน",
+  "미래·자녀 시너지":"อนาคต ลูก เสริมพลัง",
+  "이 영역에서 자연스러운 호흡":"ในด้านนี้เข้ากันได้อย่างเป็นธรรมชาติ",
+  "이 영역에서 견해 차이 가능":"ในด้านนี้อาจมีความเห็นต่าง",
+  "이 영역에서 함께 시너지 발생":"ในด้านนี้เกิดพลังเสริมกัน",
+  "에너지 공급":"ส่งพลังงาน",
+  "한쪽이 다른쪽에게 활력을 줌":"ฝ่ายหนึ่งให้พลังกับอีกฝ่าย",
+  "에너지 충돌":"พลังขัดกัน",
+  "서로 눌리는 느낌이 가끔 있음":"บางครั้งรู้สึกกดดันกันและกัน",
+  "같은 에너지":"พลังเหมือนกัน",
+  "동질감 — 잘 통하지만 자극은 적음":"เหมือนกัน — เข้าใจกันแต่กระตุ้นน้อย",
+  "★ 결정적 보완":"★ เติมเต็มชี้ขาด",
+  "상대가 당신의 부족한 부분을 정확히 채워줌":"คู่เติมเต็มส่วนที่คุณขาดพอดี",
+  "당신이 상대의 부족한 부분을 정확히 채워줌":"คุณเติมเต็มส่วนที่คู่ขาดพอดี",
+  "부분적 보완":"เติมเต็มบางส่วน",
+  "상대가 당신에게 필요한 기운을 일부 갖고 있음":"คู่มีพลังบางส่วนที่คุณต้องการ",
+  "당신이 상대에게 필요한 기운을 일부 갖고 있음":"คุณมีพลังบางส่วนที่คู่ต้องการ",
+  "★ 부족한 부분 보충":"★ เติมส่วนที่ขาด",
+  "둘이서 서로의 빈 곳을 자연스럽게 메움":"เติมเต็มช่องว่างของกันและกันอย่างเป็นธรรมชาติ",
+  "연애 매력 (당신→상대)":"เสน่ห์ความรัก (คุณ→คู่)",
+  "연애 매력 (상대→당신)":"เสน่ห์ความรัก (คู่→คุณ)",
+  "상대가 당신을 매력적으로 느끼는 케미":"เคมีที่ทำให้คู่รู้สึกดึงดูดต่อคุณ",
+  "당신이 상대를 매력적으로 느끼는 케미":"เคมีที่ทำให้คุณรู้สึกดึงดูดต่อคู่",
+  "여러 영역 동시 호환":"เข้ากันหลายด้านพร้อมกัน",
+  "여러 영역 호환":"เข้ากันหลายด้าน",
+  "삶의 여러 면에서 동시에 잘 맞음":"เข้ากันพร้อมกันหลายด้านของชีวิต",
+  "두 가지 이상의 영역에서 잘 맞음":"เข้ากันในมากกว่าสองด้าน",
+  // ── 점성술 일상어
+  "자아 ↔ 자아":"ตัวตน ↔ ตัวตน",
+  "감정 ↔ 감정":"อารมณ์ ↔ อารมณ์",
+  "당신 자아 ↔ 상대 감정":"ตัวตนคุณ ↔ อารมณ์คู่",
+  "당신 감정 ↔ 상대 자아":"อารมณ์คุณ ↔ ตัวตนคู่",
+  "외양 ↔ 외양":"ภาพลักษณ์ ↔ ภาพลักษณ์",
+  "하나처럼 일치":"เหมือนเป็นหนึ่งเดียว",
+  "조화":"กลมกลืน",
+  "마찰":"ขัดกัน",
+  "대립":"ตรงข้าม",
+  "약하게":"เบาๆ",
+  "자아 같은 원소":"ตัวตนธาตุเดียวกัน",
+  "감정 같은 원소":"อารมณ์ธาตุเดียวกัน",
+  "본능적 호감":"รู้สึกดีโดยสัญชาตญาณ",
+  "자아 · 자아":"ตัวตน · ตัวตน",
+  "감정 · 감정":"อารมณ์ · อารมณ์",
+  "외양 · 외양":"ภาพลักษณ์ · ภาพลักษณ์",
+  "자아":"ตัวตน",
+  "외양":"ภาพลักษณ์",
+  "태양":"ดวงอาทิตย์",
+  "달":"ดวงจันทร์",
+  "상승궁":"แอสเซนแดนต์",
+  // narrative 추가
+  "와 같은 본질을 가진 사람":"เหมือนแก่นแท้นี้",
+  "스스로 추진하고 결정하는 힘이 강함":"มีพลังขับเคลื่อนและตัดสินใจเอง",
+  "주변의 지원·관계 속에서 빛을 발함":"เปล่งประกายในความสัมพันธ์และการสนับสนุน",
+  "자립과 협력의 균형이 잡혀 있음":"สมดุลระหว่างพึ่งตนและร่วมมือ",
+  "당신은":"คุณคือ",
+  "사주 안에서":"ในดวงชาตา",
+  "이 가장 풍부하여":"มีมากที่สุด ทำให้",
+  "당신을 끊임없이 키워주는 구조라, 사색·내면이 깊어지는 방향으로 성장합니다":"เลี้ยงคุณต่อเนื่อง — เติบโตทางครุ่นคิดและภายใน",
+  "당신의 에너지를 빼가는 자리에 있어, 자신을 표현하고 소진하는 일이 잦습니다":"ดึงพลังคุณออก — มักแสดงออกและใช้พลัง",
+  // ── 관계 narrative (5행별, 풀 매칭)
+  "곧고 흔들림 없는 신뢰형. 자기 사람을 끌어안고 보호하지만, 본인 또한 따뜻한 햇볕(火) 같은 표현·웃음이 풍부한 상대를 만났을 때 비로소 균형을 이룹니다.":"แบบไว้ใจได้และไม่หวั่นไหว ปกป้องคนของตน เข้าสมดุลเมื่อพบคู่ที่อบอุ่นเหมือนแสงอาทิตย์ (ไฟ)",
+  "솔직하고 직진형. 감정 표현이 풍부해 매력적이지만, 너무 빨리 달구어졌다 식기 쉽습니다. 차분하고 단단한(土) 사람이나 깊은 영감(木)을 주는 상대가 잘 맞습니다.":"แบบตรงไปตรงมา แสดงอารมณ์ดีและน่าดึงดูด แต่ร้อนเร็วเย็นเร็ว เข้ากับคนสงบมั่นคง (ดิน) หรือผู้สร้างแรงบันดาลใจ (ไม้)",
+  "묵묵하고 신뢰감 가는 동반자형. 화려함보다 안정을 중시. 결단력 있는(金) 또는 변화를 주는(木) 상대와 보완됩니다.":"เพื่อนคู่ใจที่เงียบและน่าเชื่อถือ เน้นมั่นคงมากกว่าหรู เติมเต็มกับคนเด็ดขาด (โลหะ) หรือคนนำการเปลี่ยนแปลง (ไม้)",
+  "원칙·정의감 강한 단단한 사람. 차가워 보이나 속은 깊은 정. 표현 풍부한(火) 또는 지혜·포용(水) 있는 상대와 균형.":"คนแข็งแกร่งที่ยึดหลักการ ดูเย็นแต่ใจอบอุ่น สมดุลกับคนแสดงออกดี (ไฟ) หรือมีปัญญาและโอบอ้อม (น้ำ)",
+  "직관·통찰이 깊은 사람. 표현은 적어도 마음은 넓음. 단단한 의지(金)나 활기 있는 표현(火)의 상대와 깊은 짝을 이룹니다.":"ผู้มีสัญชาตญาณและหยั่งรู้ลึก แสดงออกน้อยแต่ใจกว้าง คู่ดีกับผู้มีเจตจำนงเข้ม (โลหะ) หรือผู้แสดงออกมีชีวิตชีวา (ไฟ)",
+  // ── 신체 부담
+  "간·담·신경 부담이 누적되기 쉬움":"มักสะสมภาระที่ตับ · ถุงน้ำดี · ระบบประสาท",
+  "심장·소장·혈관 부담이 누적되기 쉬움":"มักสะสมภาระที่หัวใจ · ลำไส้เล็ก · หลอดเลือด",
+  "비·위·근육 부담이 누적되기 쉬움":"มักสะสมภาระที่ม้าม · กระเพาะ · กล้ามเนื้อ",
+  "폐·대장·피부 부담이 누적되기 쉬움":"มักสะสมภาระที่ปอด · ลำไส้ใหญ่ · ผิวหนัง",
+  "신장·방광·뼈 부담이 누적되기 쉬움":"มักสะสมภาระที่ไต · กระเพาะปัสสาวะ · กระดูก",
+  "간·담·신경":"ตับ · ถุงน้ำดี · ระบบประสาท",
+  "심장·소장·혈관":"หัวใจ · ลำไส้เล็ก · หลอดเลือด",
+  "비·위·근육":"ม้าม · กระเพาะ · กล้ามเนื้อ",
+  "폐·대장·피부":"ปอด · ลำไส้ใหญ่ · ผิวหนัง",
+  "신장·방광·뼈":"ไต · กระเพาะปัสสาวะ · กระดูก",
+  // ── 실천
+  "산책·식물 가꾸기·아침 일찍 일어나기":"เดินเล่น · ปลูกต้นไม้ · ตื่นเช้า",
+  "붉은 음식·운동·웃음·따뜻한 옷":"อาหารสีแดง · ออกกำลังกาย · ยิ้ม · เสื้อผ้าอบอุ่น",
+  "규칙적 식사·요가·정원 일":"ทานอาหารเป็นเวลา · โยคะ · ทำสวน",
+  "호흡 운동·정리정돈·금속 액세서리":"หายใจลึก · จัดระเบียบ · เครื่องประดับโลหะ",
+  "검정·남색 옷·해산물·명상":"เสื้อผ้าสีดำ/น้ำเงิน · อาหารทะเล · สมาธิ",
+  "을 일상에 끌어들이는 실천":"นำมาใช้ในชีวิตประจำวัน",
+  "에 자란":"เติบโตใน",
+  "한 사람":"คนหนึ่ง",
+  "하면서도":"ในขณะที่",
+  "또한":"และ",
+  "본질":"แก่นแท้",
+  "전용":"เฉพาะตัว",
+  "자아":"ตัวตน",
+  "외양":"ภาพลักษณ์",
+  "태양":"ดวงอาทิตย์",
+  "달":"ดวงจันทร์",
+  "상승궁":"แอสเซนแดนต์",
+  "에너지":"พลังงาน",
+};
+let currentLang = "ko";
+function applyI18N(html, lang){
+  if(lang === "ko") return html;
+  const keys = Object.keys(I18N_TH).sort((a,b)=>b.length-a.length);
+  let out = html;
+  for(const k of keys){
+    if(!out.includes(k)) continue;
+    out = out.split(k).join(I18N_TH[k]);
+  }
+  return out;
+}
+function setLang(lang){
+  currentLang = lang;
+  document.querySelectorAll("#lang-toggle button").forEach(function(b){
+    b.classList.toggle("active", b.dataset.lang === lang);
+  });
+  if(state.p1) rerenderReport(1);
+  if(state.p2) rerenderReport(2);
+  if(state.p1 && state.p2 && document.getElementById("compat-view").innerHTML){
+    renderCompat();
+  }
+  translateForms();
+}
+function translateForms(){
+  document.querySelectorAll(".form-row label, .form-title, .intro p, .intro h1, .disclaimer, .btn, .btn-gold, .btn-ghost, .share-btn, .share-actions button").forEach(function(el){
+    if(el.children.length > 0) return;
+    const orig = el.dataset.orig || el.textContent.trim();
+    if(!el.dataset.orig) el.dataset.orig = orig;
+    const tr = currentLang === "ko" ? el.dataset.orig : (I18N_TH[el.dataset.orig] || el.dataset.orig);
+    el.textContent = tr;
+  });
+}
+function rerenderReport(num){
+  const p = num===1 ? state.p1 : state.p2;
+  if(!p) return;
+  const s = computeSaju(p), a = computeAstro(p);
+  const today = todayStr();
+  const b = biorhythm(p.birth, today);
+  let html = renderReport("p"+num, p, s, a, b, today);
+  html = applyI18N(html, currentLang);
+  document.getElementById("report-"+num).innerHTML = html;
+  setTimeout(function(){ drawBioChart("bio-p"+num, p.birth, today); }, 50);
+}
+function drawShareCard(canvas, s1, s2, p1, p2, sajuScore, astroScore, structural, todayScore, today){
+  const ctx = canvas.getContext("2d");
+  const W = canvas.width = 760, H = canvas.height = 1340;
+  const grad = ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,"#1A1330"); grad.addColorStop(0.6,"#0F0A1F"); grad.addColorStop(1,"#1A1330");
+  ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle = "rgba(232,194,106,0.6)";
+  let seed = 13;
+  for(let i=0;i<80;i++){
+    seed = (seed*9301+49297)%233280; const r=seed/233280;
+    seed = (seed*9301+49297)%233280; const r2=seed/233280;
+    seed = (seed*9301+49297)%233280; const r3=seed/233280;
+    ctx.beginPath(); ctx.arc(r*W, r2*H, 1.5+r3*2.5, 0, Math.PI*2); ctx.fill();
+  }
+  ctx.strokeStyle="#D4A444"; ctx.lineWidth=2; ctx.strokeRect(20,20,W-40,H-40);
+  ctx.fillStyle="#D4A444"; ctx.font="700 22px Georgia, serif"; ctx.textAlign="center";
+  ctx.fillText("S A B A I", W/2, 80);
+  ctx.fillStyle="#FAF6EC"; ctx.font="700 30px sans-serif";
+  ctx.fillText(p1.name + "  x  " + p2.name, W/2, 180);
+  ctx.fillStyle="#7A6E7E"; ctx.font="12px sans-serif";
+  ctx.fillText(today, W/2, 210);
+  ctx.fillStyle="#D4A444"; ctx.font="italic 14px Georgia, serif";
+  ctx.fillText("Compatibility", W/2, 280);
+  ctx.fillStyle="#D4A444"; ctx.font="700 140px Georgia, serif";
+  ctx.fillText(structural.toFixed(1), W/2, 410);
+  ctx.fillStyle="#E8C26A"; ctx.font="italic 24px Georgia, serif";
+  ctx.fillText("/ 100", W/2, 445);
+  ctx.fillStyle="#D4A444"; ctx.fillRect(W/2-90, 470, 180, 38);
+  ctx.fillStyle="#0F0A1F"; ctx.font="700 18px sans-serif";
+  ctx.fillText(gradeKor(structural), W/2, 495);
+  const yPil = 590;
+  ctx.fillStyle="#FAF6EC"; ctx.font="600 16px sans-serif"; ctx.textAlign="left";
+  ctx.fillText(p1.name, 80, yPil+40);
+  drawPillarRow(ctx, s1, 80, yPil+55, "#D4A444");
+  ctx.fillText(p2.name, 80, yPil+170);
+  drawPillarRow(ctx, s2, 80, yPil+185, "#E8C26A");
+  ctx.fillStyle="rgba(232,194,106,0.6)"; ctx.font="italic 11px sans-serif"; ctx.textAlign="center";
+  ctx.fillText("Generated by SABAI", W/2, H-50);
+}
+function drawPillarRow(ctx, saju, x, y, color){
+  const labels = ["Y","M","D","H"];
+  const pillars = [saju.year, saju.month, saju.day, saju.hour];
+  pillars.forEach(function(p,i){
+    const xi = x + i*140;
+    ctx.fillStyle="rgba(212,164,68,0.08)"; ctx.fillRect(xi, y, 128, 100);
+    ctx.strokeStyle="rgba(212,164,68,0.3)"; ctx.lineWidth=1; ctx.strokeRect(xi, y, 128, 100);
+    ctx.fillStyle="#7A6E7E"; ctx.font="10px sans-serif"; ctx.textAlign="center";
+    ctx.fillText(labels[i], xi+64, y+18);
+    ctx.fillStyle=color; ctx.font="700 36px Georgia, serif";
+    ctx.fillText(p.stemHj + p.branchHj, xi+64, y+62);
+    ctx.fillStyle="#E8C26A"; ctx.font="11px sans-serif";
+    ctx.fillText(p.stem + p.branch, xi+64, y+88);
+  });
+}
+function shareCard(){
+  if(!state.p1 || !state.p2){ alert("필요한 데이터가 없습니다"); return; }
+  const wrap = document.getElementById("share-card-wrap");
+  const canvas = document.getElementById("share-canvas");
+  const s1 = computeSaju(state.p1), s2 = computeSaju(state.p2);
+  const a1 = computeAstro(state.p1), a2 = computeAstro(state.p2);
+  const today = todayStr();
+  const b1 = biorhythm(state.p1.birth, today), b2 = biorhythm(state.p2.birth, today);
+  const sj = sajuCompat(s1, s2, state.p1.gender, state.p2.gender);
+  const as = astroCompat(a1, a2);
+  const bc = biorhythmCompat(b1, b2);
+  const bioScore = Math.max(0, Math.min(100, 50 + bc.total*0.4));
+  const structural = Math.round((sj.score*0.6 + as.score*0.4)*10)/10;
+  const todayScore = Math.round((structural*0.7 + bioScore*0.3)*10)/10;
+  drawShareCard(canvas, s1, s2, state.p1, state.p2, sj.score, as.score, structural, todayScore, today);
+  wrap.classList.add("show");
+  wrap.scrollIntoView({behavior:"smooth", block:"start"});
+}
+function downloadCard(){
+  const canvas = document.getElementById("share-canvas");
+  const link = document.createElement("a");
+  link.download = "SABAI_share.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+}
+async function shareNative(){
+  const canvas = document.getElementById("share-canvas");
+  if(!navigator.canShare){ alert("Share not supported"); return; }
+  canvas.toBlob(async function(blob){
+    const file = new File([blob], "SABAI_share.png", {type:"image/png"});
+    if(navigator.canShare({files:[file]})){
+      try { await navigator.share({files:[file], title:"SABAI"}); } catch(e){}
+    }
+  });
+}
+function closeShareCard(){
+  document.getElementById("share-card-wrap").classList.remove("show");
+}
+
+const state = {p1:null, p2:null};
+
+function readForm(num){
+  const id = "p" + num;
+  function getPhoto(side){
+    const img = document.getElementById(id+"-photo-"+side+"-img");
+    return (img && img.src && img.src.startsWith("data:")) ? img.src : null;
+  }
+  const front = getPhoto("front");
+  const side = getPhoto("side");
+  return {
+    name: document.getElementById(id+"-name").value,
+    gender: document.getElementById(id+"-gender").value,
+    birth: document.getElementById(id+"-birth").value,
+    time: document.getElementById(id+"-time").value,
+    tz: parseFloat(document.getElementById(id+"-tz").value),
+    lat: parseFloat(document.getElementById(id+"-lat").value),
+    lon: parseFloat(document.getElementById(id+"-lon").value),
+    place: document.getElementById(id+"-place").value,
+    photoFront: front,
+    photoSide: side,
+    photo: front || side,
+    bothPhotos: !!(front && side),
+  };
+}
+function handlePhoto(num, side){
+  const id = "p" + num;
+  const file = document.getElementById(id+"-photo-"+side).files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(){
+    const img = document.getElementById(id+"-photo-"+side+"-img");
+    img.src = reader.result;
+    document.getElementById(id+"-photo-"+side+"-preview").style.display = "block";
+  };
+  reader.readAsDataURL(file);
+}
+function onSubmit(num){
+  const p = readForm(num);
+  if(!p.name || !p.birth || !p.time){ alert("필수 항목을 입력해주세요"); return; }
+  if(num===1) state.p1 = p; else state.p2 = p;
+  const s = computeSaju(p), a = computeAstro(p);
+  const today = todayStr();
+  const b = biorhythm(p.birth, today);
+  let html = renderReport("p"+num, p, s, a, b, today);
+  html = applyI18N(html, currentLang);
+  document.getElementById("report-"+num).innerHTML = html;
+  gotoStage(num===1 ? 2 : 4);
+  setTimeout(function(){ drawBioChart("bio-p"+num, p.birth, today); }, 50);
+}
+function gotoStage(stage){
+  document.querySelectorAll(".stage").forEach(function(s){ s.classList.remove("active"); });
+  document.getElementById("stage-"+stage).classList.add("active");
+  document.querySelectorAll(".dot").forEach(function(d){
+    d.classList.toggle("active", parseInt(d.dataset.step)<=stage);
+  });
+  window.scrollTo(0,0);
+}
+
+window.onSubmit = onSubmit;
+window.gotoStage = gotoStage;
+window.renderCompat = renderCompat;
+window.shareCard = shareCard;
+window.downloadCard = downloadCard;
+window.shareNative = shareNative;
+window.closeShareCard = closeShareCard;
+window.handlePhoto = handlePhoto;
+
+document.addEventListener("DOMContentLoaded", function(){
+  document.querySelectorAll("#lang-toggle button").forEach(function(b){
+    b.addEventListener("click", function(){ setLang(b.dataset.lang); });
+  });
+  translateForms();
+});
+</script>
+</body>
+</html>
