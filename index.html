@@ -720,9 +720,9 @@ function dailyFortune(saju, today){
       score+=6; notes.push(`일지 반합 — 사회적 시너지`); break;
     }
   const de=GAN_ELEM[ds], te=GAN_ELEM[ts];
-  if(SHENG_TO[te]===de){score+=5; notes.push(`오늘 기운(${te})이 본인 일간(${de})을 도움 — 컨디션 좋음`);}
-  else if(SHENG_TO[de]===te){score+=2; notes.push(`본인이 오늘 기운에 베푸는 날 — 도움 청해도 좋음`);}
-  else if(KE_TO[te]===de){score-=6; notes.push(`오늘 기운(${te})이 본인을 극함 — 무리 금물`);}
+  if(SHENG_TO[te]===de){score+=5; notes.push(`오늘 ${te} 기운이 당신을 돕는 날 — 컨디션 좋음`);}
+  else if(SHENG_TO[de]===te){score+=2; notes.push(`당신이 오늘 기운에 베푸는 날 — 도움 청해도 좋음`);}
+  else if(KE_TO[te]===de){score-=6; notes.push(`오늘 ${te} 기운이 당신을 극하는 날 — 무리 금물`);}
   const yong = yongshin(saju).y;
   if(te===yong){score+=8; notes.push(`오늘 천간 오행이 본인 용신(${yong}) — 길일 ★`);}
   return {score:Math.max(0,Math.min(100,score)), notes, ts, tb};
@@ -755,7 +755,7 @@ function narrate(saju, interp){
   let p2 = `당신은 ${sym}와 같은 본질을 가진 사람. ${traits} 같은 성향이 두드러집니다. 사주 안에서 ${strongE}(${ELEM_HUMAN[strongE]})이 가장 풍부하여 ${meOrOut}.`;
   if(strongE !== de){
     if(SHENG_TO[strongE]===de) p2 += ` 특히 ${strongE} 기운이 당신을 끊임없이 키워주는 구조라, 사색·내면이 깊어지는 방향으로 성장합니다.`;
-    else if(SHENG_TO[de]===strongE) p2 += ` 다만 ${strongE}이 당신의 에너지를 빼가는 자리에 있어, 자신을 표현하고 소진하는 일이 잦습니다.`;
+    else if(SHENG_TO[de]===strongE) p2 += ` 다만 ${strongE} 기운이 당신의 에너지를 빼가는 자리에 있어, 자신을 표현하고 소진하는 일이 잦습니다.`;
   }
   paras.push(["당신의 성격", p2]);
 
@@ -778,7 +778,7 @@ function narrate(saju, interp){
   // 5) 실천
   const body = dist[strongE]>=4 ? `${ELEM_BODY[strongE]} 부담이 누적되기 쉬움.` : null;
   let p5 = `용신(${yong})을 일상에 끌어들이는 실천 = ${ELEM_PRACTICE[yong]}.`;
-  if(body) p5 += ` 또한 ${strongE}이 과잉이라 ${body} 의식적으로 관리하세요.`;
+  if(body) p5 += ` 또한 ${strongE} 기운이 과잉이라 ${body} 의식적으로 관리하세요.`;
   paras.push(["오늘부터 실천", p5]);
 
   return paras;
@@ -1129,9 +1129,9 @@ function renderReport(personKey, p, s, a, b, today){
       <div style="font-size:11px;color:var(--muted);margin-bottom:8px;font-style:italic">신체(23일)·감정(28일)·지성(33일) 주기로 변하는 컨디션</div>
       <canvas class="bio-chart-canvas" id="bio-${personKey}" width="800" height="320"></canvas>
       <div class="bio-legend">
-        <span><i style="background:#C95845"></i>신체 23일</span>
-        <span><i style="background:#3E7B7A"></i>감정 28일</span>
-        <span><i style="background:#5D4782"></i>지성 33일</span>
+        <span><i style="background:#C95845"></i>신체 (23일 주기)</span>
+        <span><i style="background:#3E7B7A"></i>감정 (28일 주기)</span>
+        <span><i style="background:#5D4782"></i>지성 (33일 주기)</span>
       </div>
       <div class="bio-today-vals">
         <div class="bio-val"><div class="lab">신체</div><div class="num ${b.p>=0?"pos":"neg"}">${b.p>0?"+":""}${b.p}</div></div>
@@ -1226,9 +1226,9 @@ function renderCompat(){
     <div class="section-title">${state.p1.name} × ${state.p2.name}</div>
 
     <div class="compat-pair">
-      <div class="name">${state.p1.name}<br><span style="font-size:10px;color:var(--muted);font-weight:normal">${s1.day.stem}${s1.day.branch} (${interpretSaju(s1).element})</span></div>
+      <div class="name">${state.p1.name}<br><span style="font-size:10px;color:var(--muted);font-weight:normal">${s1.day.stemHj}${s1.day.branchHj} · ${interpretSaju(s1).element}</span></div>
       <div class="vs">×</div>
-      <div class="name">${state.p2.name}<br><span style="font-size:10px;color:var(--muted);font-weight:normal">${s2.day.stem}${s2.day.branch} (${interpretSaju(s2).element})</span></div>
+      <div class="name">${state.p2.name}<br><span style="font-size:10px;color:var(--muted);font-weight:normal">${s2.day.stemHj}${s2.day.branchHj} · ${interpretSaju(s2).element}</span></div>
     </div>
 
     <div class="compat-hero">
@@ -1570,6 +1570,22 @@ const I18N_TH = {
   "맑음":"ใส","총명":"ฉลาด","순수":"บริสุทธิ์","예술감":"ศิลปะ",
   // ── narrative 끝맺음
   "의식적으로 관리하세요":"ดูแลอย่างมีสติ",
+  "23일 주기":"รอบ 23 วัน",
+  "28일 주기":"รอบ 28 วัน",
+  "33일 주기":"รอบ 33 วัน",
+  "잘 맞음":"เข้ากันได้",
+  "기운이":"พลังงาน",
+  "기운 이":"พลังงาน",
+  "당신을 돕는 날":"วันที่ช่วยคุณ",
+  "컨디션 좋음":"สภาพดี",
+  "오늘":"วันนี้",
+  "당신을 극하는 날":"วันที่ข่มคุณ",
+  "당신이 오늘 기운에 베푸는 날 — 도움 청해도 좋음":"คุณให้พลังกับวันนี้ — ขอความช่วยเหลือได้",
+  "과잉이라":"เกินไป",
+  "과잉":"เกินไป",
+  "신체 (23일 주기)":"ร่างกาย (รอบ 23 วัน)",
+  "감정 (28일 주기)":"อารมณ์ (รอบ 28 วัน)",
+  "지성 (33일 주기)":"สติปัญญา (รอบ 33 วัน)",
   "이라":"จึง","이라 ":"จึง ",
   "같은":"เหมือน",
   "의 시작":"จุดเริ่มต้น",
