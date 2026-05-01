@@ -79,6 +79,7 @@ html,body{background:var(--bg-dark);color:var(--cream);font-family:-apple-system
 .pillar .label{font-size:9px;color:var(--gold);letter-spacing:1px;margin-bottom:6px}
 .pillar .hj{font-family:Georgia,serif;font-size:24px;font-weight:700;color:var(--gold);letter-spacing:-1px;line-height:1.05}
 .pillar .ko{font-size:11px;color:var(--gold-lt);margin-top:4px;letter-spacing:1px}
+body.lang-th .pillar .ko{display:none}
 
 /* --- 일주 본질 --- */
 .essence{background:linear-gradient(135deg, var(--purple) 0%, var(--bg-deep) 100%);color:var(--cream);padding:20px;border-radius:12px;margin-bottom:12px;border:1px solid var(--line)}
@@ -1537,6 +1538,41 @@ const I18N_TH = {
   "공기":"อากาศ",
   "원소":"ธาตุ",
   "지장간":"จังกัน",
+  // ── 5행 인간적 표현 (ELEM_HUMAN 값 매칭)
+  "나무·성장의 기운":"ไม้ · พลังเติบโต",
+  "불·표현의 기운":"ไฟ · พลังแสดงออก",
+  "흙·중심의 기운":"ดิน · พลังศูนย์กลาง",
+  "금속·결단의 기운":"โลหะ · พลังเด็ดขาด",
+  "물·지혜의 기운":"น้ำ · พลังปัญญา",
+  // ── 일지 분위기 단축 (— 앞부분)
+  "한밤의 물기":"ความชื้นยามดึก",
+  "겨울 끝 흙":"ดินปลายหนาว",
+  "이른 봄의 시작":"ต้นฤดูใบไม้ผลิ",
+  "활짝 핀 봄":"ฤดูใบไม้ผลิที่บานเต็มที่",
+  "늦봄 흙":"ดินปลายฤดูใบไม้ผลิ",
+  "초여름 불":"ไฟต้นฤดูร้อน",
+  "한여름 절정":"กลางฤดูร้อน",
+  "늦여름 휴식":"ปลายฤดูร้อน",
+  "초가을 결실":"ต้นฤดูใบไม้ร่วง",
+  "한가을 수확":"กลางฤดูใบไม้ร่วง",
+  "늦가을 흙":"ดินปลายฤดูใบไม้ร่วง",
+  "초겨울 물":"น้ำต้นฤดูหนาว",
+  // ── 일간 traits 개별 단어 (split by ·)
+  "독립적":"อิสระ","진취적":"กระตือรือร้น","곧은 의지":"มุ่งมั่น","리더십":"ผู้นำ","완고함":"ดื้อดึง",
+  "유연":"ยืดหยุ่น","사회성":"สังคม","친화":"เป็นมิตร","표현력":"แสดงออก","우유부단":"ลังเล",
+  "열정":"ร้อนแรง","낙관":"มองโลกในแง่ดี","솔직":"ตรงไปตรงมา","따뜻함":"อบอุ่น","다혈질":"เลือดร้อน",
+  "섬세":"ละเอียดอ่อน","헌신":"อุทิศตน","예의":"มีมารยาท","내면 강함":"เข้มแข็งภายใน",
+  "신중":"รอบคอบ","믿음직":"น่าเชื่อถือ","뚝심":"มั่นคง","보수":"อนุรักษ์","고집":"ดื้อ",
+  "포용력":"โอบอ้อมอารี","실용":"ปฏิบัตินิยม","세심":"ละเอียด","소심":"ขี้อาย",
+  "결단":"เด็ดขาด","정의감":"ยุติธรรม","의리":"คุณธรรม","강직":"แน่วแน่","냉정":"เยือกเย็น",
+  "완벽주의":"สมบูรณ์แบบ","심미안":"สายตาสุนทรียะ","예술성":"ศิลปะ","까칠함":"จู้จี้",
+  "지혜":"ปัญญา","포용":"โอบอ้อม","통찰":"หยั่งรู้","깊이":"ลึกซึ้ง","변덕":"เปลี่ยนแปลง",
+  "맑음":"ใส","총명":"ฉลาด","순수":"บริสุทธิ์","예술감":"ศิลปะ",
+  // ── narrative 끝맺음
+  "의식적으로 관리하세요":"ดูแลอย่างมีสติ",
+  "이라":"จึง","이라 ":"จึง ",
+  "같은":"เหมือน",
+  "의 시작":"จุดเริ่มต้น",
   // ── 시간대 / 위치 (일상어)
   "한국 / 일본":"เกาหลี / ญี่ปุ่น",
   "중국 / 홍콩 / 대만 / 싱가포르 / 필리핀 / 말레이시아":"จีน / ฮ่องกง / ไต้หวัน / สิงคโปร์ / ฟิลิปปินส์ / มาเลเซีย",
@@ -1724,6 +1760,8 @@ function applyI18N(html, lang){
 }
 function setLang(lang){
   currentLang = lang;
+  document.body.classList.toggle("lang-th", lang === "th");
+  document.body.classList.toggle("lang-ko", lang === "ko");
   document.querySelectorAll("#lang-toggle button").forEach(function(b){
     b.classList.toggle("active", b.dataset.lang === lang);
   });
@@ -1866,10 +1904,8 @@ function readForm(num){
     lat: parseFloat(document.getElementById(id+"-lat").value),
     lon: parseFloat(document.getElementById(id+"-lon").value),
     place: document.getElementById(id+"-place").value,
-    photoFront: front,
-    photoSide: side,
-    photo: front || side,
-    bothPhotos: !!(front && side),
+    photoFront: front, photoSide: side,
+    photo: front || side, bothPhotos: !!(front && side),
   };
 }
 function handlePhoto(num, side){
@@ -1919,6 +1955,7 @@ document.addEventListener("DOMContentLoaded", function(){
   document.querySelectorAll("#lang-toggle button").forEach(function(b){
     b.addEventListener("click", function(){ setLang(b.dataset.lang); });
   });
+  document.body.classList.add("lang-ko");
   translateForms();
 });
 </script>
